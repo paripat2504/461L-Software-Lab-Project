@@ -1,7 +1,13 @@
 import { useState } from 'react'; 
-import './App.css'
+import { useNavigate } from "react-router";
+
 
 function LoginForm() {
+    // const navigate = useNavigate();
+    //PLACEHOLDER UNTIL WE SEND ACTUAL HTTP REQUESTS TO BACKEND
+    const dummyDatabase = new Map();
+    dummyDatabase.set('samant', 'SE-god');
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
@@ -15,14 +21,21 @@ function LoginForm() {
   
     const handleClick = (e) => {
         e.preventDefault();
-        console.log('Username entered:', username);
-        console.log('Password entered:', password);
+        //PLACEHOLDER LOGIC
+        if (dummyDatabase.has(username)) {
+            console.log(`Username '${username}' exists with value '${dummyDatabase.get(username)}'`);
+          } else {
+            console.log(`Access denied`);
+          }
     };
+
+    const handleSignup = () => {
+        console.log("User wants to sign up.")
+    }
   
   
     return (
     <form onSubmit={handleClick}>
-          <h1>Login Page</h1>
           <div>
             <label>User ID</label>
             <input type="text"
@@ -40,8 +53,8 @@ function LoginForm() {
               onChange={handlePassword}  
             />
           </div>
-          <button onClick={handleClick}>Login</button>
-          <button>Sign up</button>
+          <button type="submit" onClick={handleClick} style={{marginRight:'20px'}}>Login</button>
+          <button type="button" onClick={handleSignup}>Sign up</button>
     </form>
     );
   }
