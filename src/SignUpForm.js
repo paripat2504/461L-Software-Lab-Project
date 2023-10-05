@@ -1,17 +1,36 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router";
+import { useLocation } from 'react-router-dom';
 
 function SignUpForm() {
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const location = useLocation();
+  const { dummyDatabase } = location.state;
+
+  const handleUsername = (e) => {
+    setUsername(e.target.value); 
+  }
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value); 
+  }
+
+  const handleSubmit = () => {
+    dummyDatabase.set(username, password);
+    navigate('/');
+  };
 
     return (
     <div className="SignUpForm">
       <header className="SignUpForm-header">
         <h1>Sign Up</h1>
           <div>
-            <label>First Name</label>
+            <label>Full Name</label>
             <input type="text"
-              placeholder='Enter your first name'
+              placeholder='Enter your full name'
               style={{marginRight:'10px'}}
             />
           </div>
@@ -19,12 +38,16 @@ function SignUpForm() {
             <label>Username</label>
             <input type="text"
               placeholder='Enter your desired username'
+              value={username}
+              onChange={handleUsername}
             />
           </div>
           <div>
             <label>Password</label>
             <input type="password"
               placeholder='Enter your desired password'
+              value={password}
+              onChange={handlePassword} 
             />
           </div>
           <div>
@@ -40,7 +63,7 @@ function SignUpForm() {
             />
           </div>
           <button type="submit" onClick={() => {navigate('/')}} style={{marginRight:'20px'}}>Back</button>
-          <button type="submit" style={{marginRight:'20px'}}>Submit</button>
+          <button type="submit" onClick={handleSubmit} style={{marginRight:'20px'}}>Submit</button>
       </header>
     </div>
     );

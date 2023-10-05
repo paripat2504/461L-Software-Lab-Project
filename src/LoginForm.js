@@ -1,7 +1,6 @@
 import { useState } from 'react'; 
 import { useNavigate } from "react-router";
 
-
 function LoginForm() {
     const navigate = useNavigate();
     //PLACEHOLDER UNTIL WE CONNECT TO BACKEND
@@ -31,6 +30,10 @@ function LoginForm() {
           }
         setMessage(msg);
     };
+
+    const handleSignupClick = () => {
+      navigate('/signup', { state: { dummyDatabase } });
+    };
   
     return (
       <form onSubmit={handleClick}>
@@ -53,7 +56,7 @@ function LoginForm() {
             />
           </div>
           <button type="submit" onClick={handleClick} style={{marginRight:'20px'}}>Login</button>
-          <button type="button" onClick={() => {navigate('/signup')}}>Sign up</button>
+          <button type="button" onClick={handleSignupClick}>Sign up</button>
           <div>{message}</div>
     </form>
     );
