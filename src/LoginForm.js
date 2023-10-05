@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 
 function LoginForm() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     //PLACEHOLDER UNTIL WE SEND ACTUAL HTTP REQUESTS TO BACKEND
     const dummyDatabase = new Map();
     dummyDatabase.set('samant', 'SE-god');
@@ -35,7 +35,8 @@ function LoginForm() {
   
   
     return (
-    <form onSubmit={handleClick}>
+      <form onSubmit={handleClick}>
+        <h1>Login Page</h1>
           <div>
             <label>User ID</label>
             <input type="text"
@@ -54,7 +55,7 @@ function LoginForm() {
             />
           </div>
           <button type="submit" onClick={handleClick} style={{marginRight:'20px'}}>Login</button>
-          <button type="button" onClick={handleSignup}>Sign up</button>
+          <button type="button" onClick={() => {navigate('/signup')}}>Sign up</button>
     </form>
     );
   }
