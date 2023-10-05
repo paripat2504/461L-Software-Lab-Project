@@ -4,12 +4,13 @@ import { useNavigate } from "react-router";
 
 function LoginForm() {
     const navigate = useNavigate();
-    //PLACEHOLDER UNTIL WE SEND ACTUAL HTTP REQUESTS TO BACKEND
+    //PLACEHOLDER UNTIL WE CONNECT TO BACKEND
     const dummyDatabase = new Map();
     dummyDatabase.set('samant', 'SE-god');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
   
     const handleUsername = (e) => {
       setUsername(e.target.value); 
@@ -22,17 +23,14 @@ function LoginForm() {
     const handleClick = (e) => {
         e.preventDefault();
         //PLACEHOLDER LOGIC
+        var msg = ''
         if (dummyDatabase.has(username)) {
-            console.log(`Username '${username}' exists with value '${dummyDatabase.get(username)}'`);
+            msg = `Username '${username}' exists with password '${dummyDatabase.get(username)}'`;
           } else {
-            console.log(`Access denied`);
+            msg = `Access denied`;
           }
+        setMessage(msg);
     };
-
-    const handleSignup = () => {
-        console.log("User wants to sign up.")
-    }
-  
   
     return (
       <form onSubmit={handleClick}>
@@ -56,6 +54,7 @@ function LoginForm() {
           </div>
           <button type="submit" onClick={handleClick} style={{marginRight:'20px'}}>Login</button>
           <button type="button" onClick={() => {navigate('/signup')}}>Sign up</button>
+          <div>{message}</div>
     </form>
     );
   }
