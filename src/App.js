@@ -1,23 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import LoginForm from './LoginForm';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignUpForm from './SignUpForm';
 
 function App() {
   return (
+    <Router>
     <div className="App">
       <header className="App-header">
-        <h1>Login Page</h1>
-        <div>
-          <label>User ID</label>
-          <input type="text" placeholder='Enter your username' style={{marginRight:'10px'}}/>
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="text" placeholder='Enter your password'/>
-        </div>
-        <button>Login</button>
-        <button>Sign up</button>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/signup" element={<SignUpForm/>} />
+        </Routes>
       </header>
     </div>
+    </Router>
   );
 }
 
