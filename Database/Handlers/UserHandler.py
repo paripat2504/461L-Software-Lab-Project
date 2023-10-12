@@ -1,5 +1,5 @@
 import uuid
-import Database.Database_Constants as Database_Constants
+import Database_Constants
 import ast
 
 from cryptography.fernet import Fernet
@@ -20,7 +20,7 @@ db = mongo.getDatabase()
 
 users = mongo.getUsers()
 
-def addUser(userName : str, password : str, userID : str, projects):
+def addUser(userName : str, userID : str, password : str, projects):
 
     
 

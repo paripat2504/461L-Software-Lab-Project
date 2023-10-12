@@ -3,8 +3,8 @@ import pymongo
 class InitializeGlobals:
 
     def __init__(self):
-        self.__database_name = "projectdatabase"
-        self.__mongourl = "mongodb://localhost:27017/"
+        self.__database_name = "NumpyNinjasDB"
+        self.__mongourl = "mongodb+srv://numpy_ninja:ninja461L@numpyninjasdb.jg4w9p9.mongodb.net/"
         self.__client = pymongo.MongoClient(self.__mongourl)
 
 
