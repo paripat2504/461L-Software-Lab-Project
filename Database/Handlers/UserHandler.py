@@ -34,7 +34,7 @@ def addUser(userName : str, userID : str, password : str, projects):
     users.insert_one(userDocument)
 
 
-def dropUser(userID):
+def dropUser(userID : str):
     users.delete_one( {"userID" : userID})
 
 

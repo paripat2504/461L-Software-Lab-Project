@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./Database/Handlers"
+        "./Database/Handlers",
+        "./softwareApp/Database/Handlers"
     ]
 }
