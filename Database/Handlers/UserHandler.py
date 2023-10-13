@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import uuid
 import Database_Constants
 import ast
 
-from cryptography.fernet import Fernet
+#from cryptography.fernet import Fernet
 
 
 
@@ -20,15 +24,15 @@ db = mongo.getDatabase()
 
 users = mongo.getUsers()
 
-def addUser(userName : str, userID : str, password : str, projects):
+def addUser(criteria : dict):
 
     
 
     userDocument = {
-        "userName": userName,
-        "password": password,
-        "userID" : userID,
-        "projects" : projects
+        "userName": criteria.get('userName'),
+        "password": criteria.get('password'),
+        "userID" : criteria.get('userID'),
+        "projects" : criteria.get('projects')
     }
 
     users.insert_one(userDocument)
@@ -36,6 +40,25 @@ def addUser(userName : str, userID : str, password : str, projects):
 
 def dropUser(userID : str):
     users.delete_one( {"userID" : userID})
+
+
+def findUser(criteria : dict, fieldToReturn : dict):
+    doesUserExist = False
+    value = users.find_one(criteria,fieldToReturn)
+    if(value != None):
+        doesUserExist = True
+
+    return value, doesUserExist
+
+def editUser(criteria : dict, valuesToUpdate : dict):
+    returnVal, doesUserExist = findUser(criteria,valuesToUpdate)
+    if(doesUserExist == True):
+        valuesToUpdate = { "$set": valuesToUpdate}
+        users.update_one(criteria, valuesToUpdate)
+        returnVal, doesUserExist = findUser(criteria,None)
+        return returnVal, doesUserExist
+    else:
+        return None, False
 
 
 def addTeam(userID : str , projectName : str):
@@ -95,15 +118,8 @@ def editTeam(userID : str, prevProjectName : str, newProjectName):
 
 
 
-def findUser(criteria, fieldToReturn):
-    if(fieldToReturn != None):
-        value = users.find_one(criteria,fieldToReturn)
 
-        return value
-    
-    else:
-        value = users.find_one(criteria)
-        return value
     
     
-
+    
+    
