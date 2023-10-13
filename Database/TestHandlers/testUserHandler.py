@@ -13,13 +13,16 @@ import pymongo
 mongo = Database_Constants.InitializeGlobals()
 mongo_url = mongo.getMongoURL()  # Default MongoDB connection URL
 users = mongo.getUsers()
+UserHandler.addUser("John", "John1", "Mejia", ["Numpy Ninjas", "Team"])
+
+
 
 
 
 class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
         UserHandler.addUser("newUser2", "userLogin", "passwd", ["Numpy Ninjas", "Team"])
-        returnVal = UserHandler.findUser({'userID' : "userLogin"}, {'userLogin' : 1 , '_id' : 0})
+        returnVal, isUser = UserHandler.findUser({'userID' : "userLogin"}, {'userID' : 1 , '_id' : 0})
         self.assertEqual({'userID' : 'userLogin'},returnVal)
         UserHandler.dropUser('userLogin')
 
