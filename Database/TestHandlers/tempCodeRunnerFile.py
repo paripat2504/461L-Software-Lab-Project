@@ -1,2 +1,0 @@
-
-        UserHandler.addUser(criteria)

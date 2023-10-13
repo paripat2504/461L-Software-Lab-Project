@@ -2,5 +2,15 @@
     "python.analysis.extraPaths": [
         "./Database/Handlers",
         "./softwareApp/Database/Handlers"
-    ]
+    ],
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./Database/TestHandlers",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.testing.nosePath": "nosetests"
 }
