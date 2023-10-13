@@ -6,7 +6,7 @@ import uuid
 import Database_Constants
 import ast
 
-from cryptography.fernet import Fernet
+#from cryptography.fernet import Fernet
 
 
 
@@ -101,17 +101,12 @@ def editTeam(userID : str, prevProjectName : str, newProjectName):
 
 def findUser(criteria, fieldToReturn):
     doesUserExist = False
-    if(fieldToReturn != None):
-        value = users.find_one(criteria,fieldToReturn)
-        if(value != {}):
-            doesUserExist = True
+    value = users.find_one(criteria,fieldToReturn)
+    if(value != {}):
+        doesUserExist = True
 
-        return value, doesUserExist
+    return value, doesUserExist
     
-    else:
-        if(value != {}):
-            doesUserExist = True
-        value = users.find_one(criteria)
-        return value, doesUserExist
+    
     
     
