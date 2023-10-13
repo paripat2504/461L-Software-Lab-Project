@@ -24,9 +24,19 @@ class testUserHandler(unittest.TestCase):
         self.assertEqual({'userID' : 'user1'},returnVal)
         UserHandler.dropUser('user1')
 
-    # def testEditUser(self):
-    #     UserHandler.addUser("newUser2", "userLogin", "passwd", ["Numpy Ninjas", "Team"])
-    #     UserHandler.dropUser('userLogin')
+    def testEditUser(self):
+        criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
+        UserHandler.addUser(criteria)
+        returnVal, userExists = UserHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+        self.assertEqual({'userID' : 'user1'},returnVal)
+
+        UserHandler.editUser({'userID' : 'user1'}, {'userName' : 'updatedUser'})
+
+        updatedReturnVal, _err = UserHandler.findUser({'userID' : 'user1'}, {'userName' : 1, '_id' : 0})
+        self.assertEqual({'userName' : 'updatedUser'}, updatedReturnVal)
+        UserHandler.dropUser('user1')
+
+
 
         
 

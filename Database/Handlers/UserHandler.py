@@ -42,6 +42,25 @@ def dropUser(userID : str):
     users.delete_one( {"userID" : userID})
 
 
+def findUser(criteria : dict, fieldToReturn : dict):
+    doesUserExist = False
+    value = users.find_one(criteria,fieldToReturn)
+    if(value != None):
+        doesUserExist = True
+
+    return value, doesUserExist
+
+def editUser(criteria : dict, valuesToUpdate : dict):
+    returnVal, doesUserExist = findUser(criteria,valuesToUpdate)
+    if(doesUserExist == True):
+        valuesToUpdate = { "$set": valuesToUpdate}
+        users.update_one(criteria, valuesToUpdate)
+        returnVal, doesUserExist = findUser(criteria,None)
+        return returnVal, doesUserExist
+    else:
+        return None, False
+
+
 def addTeam(userID : str , projectName : str):
     criteria = {'userID' : userID}
     fToReturn = {'projects' : 1, '_id' : 0}
@@ -99,13 +118,7 @@ def editTeam(userID : str, prevProjectName : str, newProjectName):
 
 
 
-def findUser(criteria : dict, fieldToReturn : dict):
-    doesUserExist = False
-    value = users.find_one(criteria,fieldToReturn)
-    if(value != None):
-        doesUserExist = True
 
-    return value, doesUserExist
     
     
     
