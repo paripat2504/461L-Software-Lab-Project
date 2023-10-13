@@ -1,7 +1,8 @@
-import Database.Handlers.UserHandler
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Database.Handlers import UserHandler
 class Database:
 
     def __init__(self):
