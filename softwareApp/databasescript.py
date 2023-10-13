@@ -1,7 +1,10 @@
-import Database.Handlers.UserHandler
+
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+project_folder = os.path.dirname(os.path.abspath(__file__))
+project_folder_parent = os.path.dirname("461L-Software-Lab-Project")
+sys.path.append(project_folder_parent)
+from Database.Handlers import UserHandler
 class Database:
 
     def __init__(self):
@@ -10,7 +13,7 @@ class Database:
     #SignUp: 1 = successful signup, 0 = unsuccessful
     def signup(self, username, userID, password):
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
-        valuesToReturn = {None}
+        valuesToReturn = None
         returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
         if doesUserExist:
             #there is a user in the database
@@ -24,7 +27,7 @@ class Database:
     #Login: 1 = successful login, 0 = unsuccessful
     def login(self, username, userID, password):
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
-        valuesToReturn = {None}
+        valuesToReturn = None
         returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
         if doesUserExist:
             #the login matches user in database
@@ -71,9 +74,9 @@ while(1):
         userName = input("Enter Username: ")
         userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
-        db.signup(userName, userID, passWord)
+        print(db.signup(userName, userID, passWord))
     else:
         userName = input("Enter Username: ")
         userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
-        db.login(userName, userID, passWord)
+        print(db.login(userName, userID, passWord))
