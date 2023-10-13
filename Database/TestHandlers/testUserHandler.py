@@ -18,10 +18,11 @@ users = mongo.getUsers()
 
 class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
-        UserHandler.addUser("newUser2", "userLogin", "passwd", ["Numpy Ninjas", "Team"])
-        returnVal = UserHandler.findUser({'userID' : "userLogin"}, {'userLogin' : 1 , '_id' : 0})
-        self.assertEqual({'userID' : 'userLogin'},returnVal)
-        UserHandler.dropUser('userLogin')
+        criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
+        UserHandler.addUser(criteria)
+        returnVal, userExists = UserHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+        self.assertEqual({'userID' : 'user1'},returnVal)
+        UserHandler.dropUser('user1')
 
     # def testEditUser(self):
     #     UserHandler.addUser("newUser2", "userLogin", "passwd", ["Numpy Ninjas", "Team"])

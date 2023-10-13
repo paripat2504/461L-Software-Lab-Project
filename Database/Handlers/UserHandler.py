@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import uuid
 import Database_Constants
 import ast
 
-from cryptography.fernet import Fernet
+#from cryptography.fernet import Fernet
 
 
 
@@ -20,15 +24,15 @@ db = mongo.getDatabase()
 
 users = mongo.getUsers()
 
-def addUser(userName : str, userID : str, password : str, projects):
+def addUser(criteria : dict):
 
     
 
     userDocument = {
-        "userName": userName,
-        "password": password,
-        "userID" : userID,
-        "projects" : projects
+        "userName": criteria.get('userName'),
+        "password": criteria.get('password'),
+        "userID" : criteria.get('userID'),
+        "projects" : criteria.get('projects')
     }
 
     users.insert_one(userDocument)
@@ -95,19 +99,14 @@ def editTeam(userID : str, prevProjectName : str, newProjectName):
 
 
 
-def findUser(criteria, fieldToReturn):
+def findUser(criteria : dict, fieldToReturn : dict):
     doesUserExist = False
-    if(fieldToReturn != None):
-        value = users.find_one(criteria,fieldToReturn)
-        if(value != {}):
-            doesUserExist = True
+    value = users.find_one(criteria,fieldToReturn)
+    if(value != None):
+        doesUserExist = True
 
-        return value, doesUserExist
+    return value, doesUserExist
     
-    else:
-        if(value != {}):
-            doesUserExist = True
-        value = users.find_one(criteria)
-        return value, doesUserExist
+    
     
     

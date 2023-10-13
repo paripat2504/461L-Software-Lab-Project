@@ -1,29 +1,41 @@
-import UserHandler
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from Database.Handlers import UserHandler
 class Database:
 
     def __init__(self):
         self.userIDDatabase = []
         self.passwordDatabase = []
     #SignUp: 1 = successful signup, 0 = unsuccessful
-    def signup(username, userID, password):
-        dataToPass = [username, userID, password]
-        if UserHandler.findUser(dataToPass) == 1:
+    def signup(self, username, userID, password):
+        criteria = {'userName' : username, 'userID' : userID, 'password' : password }
+        valuesToReturn = None
+        returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+        if doesUserExist == True:
             #there is a user in the database
-            return 0
+            return False
         else:
-            UserHandler.addUser(dataToPass)
-            if UserHandler.findUser == 1:
-                return 1
+            crit_with_team = {'userName' : criteria.get('userName'), 'userID' : criteria.get('userID'), 'password' : criteria.get('password'), 'projects' : []}
+            UserHandler.addUser(crit_with_team)
+            returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+            print("Welcome ", crit_with_team.get('userName'), "! You have been added!")
+
+            if doesUserExist == False:
+                return True
             else:
-                return 0
+                return False
     #Login: 1 = successful login, 0 = unsuccessful
-    def login(username, userID, password):
-        dataToPass = [username, userID, password]
-        if UserHandler.findUser(dataToPass) == 1:
+    def login(self, username, userID, password):
+        criteria = {'userName' : username, 'userID' : userID, 'password' : password }
+        valuesToReturn = None
+        returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+        if doesUserExist == True:
             #the login matches user in database
-            return 1
+            return True
         else:
-            return 0
+            return False
     
     
     # def signup(self, userName, passWord):
@@ -62,9 +74,13 @@ while(1):
 
     if(signup_or_login == "1"):
         userName = input("Enter Username: ")
+        userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
-        db.signup(userName, passWord)
-    else:
+        print(db.signup(userName, userID, passWord))
+    elif(signup_or_login == "0"):
         userName = input("Enter Username: ")
+        userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
-        db.login(userName, passWord)
+        print(db.login(userName, userID, passWord))
+    else:
+        print("Invalid Response")
