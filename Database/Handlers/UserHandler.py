@@ -24,15 +24,15 @@ db = mongo.getDatabase()
 
 users = mongo.getUsers()
 
-def addUser(userName : str, userID : str, password : str, projects):
+def addUser(criteria : dict):
 
     
 
     userDocument = {
-        "userName": userName,
-        "password": password,
-        "userID" : userID,
-        "projects" : projects
+        "userName": criteria.get('userName'),
+        "password": criteria.get('password'),
+        "userID" : criteria.get('userID'),
+        "projects" : criteria.get('projects')
     }
 
     users.insert_one(userDocument)
@@ -99,10 +99,10 @@ def editTeam(userID : str, prevProjectName : str, newProjectName):
 
 
 
-def findUser(criteria, fieldToReturn):
+def findUser(criteria : dict, fieldToReturn : dict):
     doesUserExist = False
     value = users.find_one(criteria,fieldToReturn)
-    if(value != {}):
+    if(value != None):
         doesUserExist = True
 
     return value, doesUserExist

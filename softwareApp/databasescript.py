@@ -1,16 +1,7 @@
-<<<<<<< HEAD
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-=======
-
-import sys
-import os
-project_folder = os.path.dirname(os.path.abspath(__file__))
-project_folder_parent = os.path.dirname("461L-Software-Lab-Project")
-sys.path.append(project_folder_parent)
->>>>>>> 26d99c9931fb5399d9d37f73185b74a0216c8cf6
 from Database.Handlers import UserHandler
 class Database:
 
@@ -22,12 +13,16 @@ class Database:
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
         valuesToReturn = None
         returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
-        if doesUserExist:
+        if doesUserExist == True:
             #there is a user in the database
             return False
         else:
-            UserHandler.addUser(criteria, valuesToReturn)
-            if UserHandler.findUser == 1:
+            crit_with_team = {'userName' : criteria.get('userName'), 'userID' : criteria.get('userID'), 'password' : criteria.get('password'), 'projects' : []}
+            UserHandler.addUser(crit_with_team)
+            returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+            print("Welcome ", crit_with_team.get('userName'), "! You have been added!")
+
+            if doesUserExist == False:
                 return True
             else:
                 return False
@@ -36,7 +31,7 @@ class Database:
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
         valuesToReturn = None
         returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
-        if doesUserExist:
+        if doesUserExist == True:
             #the login matches user in database
             return True
         else:
@@ -82,8 +77,10 @@ while(1):
         userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
         print(db.signup(userName, userID, passWord))
-    else:
+    elif(signup_or_login == "0"):
         userName = input("Enter Username: ")
         userID =   input("EnterUserID")
         passWord = input("Enter Password: ")
         print(db.login(userName, userID, passWord))
+    else:
+        print("Invalid Response")
