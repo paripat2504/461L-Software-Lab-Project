@@ -3,6 +3,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Database.Handlers import UserHandler
+
+UHandler = UserHandler.UserHandler(False)
 class Database:
 
     def __init__(self):
@@ -12,14 +14,14 @@ class Database:
     def signup(self, username, userID, password):
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
         valuesToReturn = None
-        returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+        returnValue, doesUserExist = UHandler.findUser(criteria, valuesToReturn)
         if doesUserExist == True:
             #there is a user in the database
             return False
         else:
             crit_with_team = {'userName' : criteria.get('userName'), 'userID' : criteria.get('userID'), 'password' : criteria.get('password'), 'projects' : []}
-            UserHandler.addUser(crit_with_team)
-            returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+            UHandler.addUser(crit_with_team)
+            returnValue, doesUserExist = UHandler.findUser(criteria, valuesToReturn)
             print("Welcome ", crit_with_team.get('userName'), "! You have been added!")
 
             if doesUserExist == False:
@@ -30,7 +32,7 @@ class Database:
     def login(self, username, userID, password):
         criteria = {'userName' : username, 'userID' : userID, 'password' : password }
         valuesToReturn = None
-        returnValue, doesUserExist = UserHandler.findUser(criteria, valuesToReturn)
+        returnValue, doesUserExist = UHandler.findUser(criteria, valuesToReturn)
         if doesUserExist == True:
             #the login matches user in database
             return True
