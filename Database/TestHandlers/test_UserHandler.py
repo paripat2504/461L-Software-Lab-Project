@@ -1,44 +1,64 @@
+import json
+import random
+import string
 import sys
 import os
+
+import pymongo
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 from Handlers import UserHandler
-import Database_Constants
 import unittest
-import pymongo
 
 # Replace these with your MongoDB connection details
 
-mongo = Database_Constants.InitializeGlobals()
-mongo_url = mongo.getMongoURL()  # Default MongoDB connection URL
-users = mongo.getUsers()
+UHandler = UserHandler.UserHandler(True)
 
+def generateUserName(length=8):
+    characters = string.ascii_letters + string.digits
+    username = ''.join(random.choice(characters) for _ in range(length))
+    return username
 
+def dropUserCollection():
+    UHandler.dropUserCollection()
 
 class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
         criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
-        UserHandler.addUser(criteria)
-        returnVal, userExists = UserHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+        UHandler.addUser(criteria)
+        returnVal, userExists = UHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
         self.assertEqual({'userID' : 'user1'},returnVal)
-        UserHandler.dropUser('user1')
+        dropUserCollection()
 
     def testEditUser(self):
         criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
-        UserHandler.addUser(criteria)
-        returnVal, userExists = UserHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+        UHandler.addUser(criteria)
+        returnVal, userExists = UHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
         self.assertEqual({'userID' : 'user1'},returnVal)
 
-        UserHandler.editUser({'userID' : 'user1'}, {'userName' : 'updatedUser'})
+        UHandler.editUser({'userID' : 'user1'}, {'userName' : 'updatedUser'})
 
-        updatedReturnVal, _err = UserHandler.findUser({'userID' : 'user1'}, {'userName' : 1, '_id' : 0})
+        updatedReturnVal, _err = UHandler.findUser({'userID' : 'user1'}, {'userName' : 1, '_id' : 0})
         self.assertEqual({'userName' : 'updatedUser'}, updatedReturnVal)
-        UserHandler.dropUser('user1')
 
+        dropUserCollection()
 
+    def testDropUser(self):
+        criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
+        UHandler.addUser(criteria)
+        returnVal, userExists = UHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+        self.assertEqual({'userID' : 'user1'},returnVal)
+        self.assertEqual(userExists, True)
 
-        
+        UHandler.dropUser('user1')
+        returnVal, userExists = UHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
+
+        self.assertEqual(None, returnVal)
+        self.assertEqual(userExists, False)
+
+        dropUserCollection()
+
 
 
 if __name__ == '__main__':

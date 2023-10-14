@@ -1,0 +1,9 @@
+{
+    "mongodb_uri": "mongodb+srv://numpy_ninja:ninja461L@numpyninjasdb.jg4w9p9.mongodb.net/",
+    "mongodb_username": "numpy_ninja",
+    "mongodb_password": "ninja461L",
+    "mongodb_name": "NumpyNinjasDB",
+
+    "testDB_uri" : "mongodb+srv://numpy_ninja:ninja461L@numpyninjastestdb.jg4w9p9.mongodb.net/",
+    "testDB_name": "NumpyNinjasTestDB"
+}
