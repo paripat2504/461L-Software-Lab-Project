@@ -74,12 +74,12 @@ while(1):
 
     if(signup_or_login == "1"):
         userName = input("Enter Username: ")
-        userID =   input("EnterUserID")
+        userID =   input("EnterUserID: ")
         passWord = input("Enter Password: ")
         print(db.signup(userName, userID, passWord))
-    elif(signup_or_login == "0"):
+    elif(signup_or_login == "2"):
         userName = input("Enter Username: ")
-        userID =   input("EnterUserID")
+        userID =   input("EnterUserID: ")
         passWord = input("Enter Password: ")
         print(db.login(userName, userID, passWord))
     else:
