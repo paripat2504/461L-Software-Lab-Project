@@ -6,9 +6,9 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./Database",
+        "./Database/TestHandlers",
         "-p",
-        "test*.py"
+        "test_*.py"
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
