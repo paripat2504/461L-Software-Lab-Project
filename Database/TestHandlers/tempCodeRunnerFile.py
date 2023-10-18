@@ -1,2 +1,1 @@
-):
-    characters = string.ascii
+

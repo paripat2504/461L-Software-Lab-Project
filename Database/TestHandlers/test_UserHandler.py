@@ -14,7 +14,7 @@ import unittest
 # Replace these with your MongoDB connection details
 
 
-UHandler = UserHandler.UserHandler(True)
+UHandler = UserHandler.UserHandler()
 
 def generateUserName(length=8):
     characters = string.ascii_letters + string.digits
@@ -28,6 +28,8 @@ class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
         criteria = {'userName' : 'newUser', 'userID' : 'user1' , 'password' : 'passwd' , 'projects' : []}
         UHandler.addUser(criteria)
+        UHandler.addUser(criteria)
+
         returnVal, userExists = UHandler.findUser({'userID' : "user1"}, {'userID' : 1 , '_id' : 0})
         self.assertEqual({'userID' : 'user1'},returnVal)
         dropUserCollection()

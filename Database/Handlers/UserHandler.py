@@ -11,7 +11,7 @@ import ast
 
 class UserHandler:
 
-    def __init__(self, debugMode : bool):
+    def __init__(self, debugMode : bool = True):
         self.__debugMode = debugMode
         self.__mongo = DB_init.InitializeGlobals(self.__debugMode)
         self.__mongo_url = self.__mongo.getMongoURI()  # Default MongoDB connection URL
