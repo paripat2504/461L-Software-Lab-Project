@@ -1,14 +1,17 @@
 # Import necessary modules
+import json
 from re import T
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 #from databasescript import Database  # Import the Database class
 
-from Database.Handlers import UserHandler
+
+from Database.Handlers.UserHandler import UserHandler as uH
 
 # Create the Flask application
 app = Flask(__name__)
 CORS(app)
+userHandler = uH(False)
 
 # Create an instance of the Database class
 
@@ -21,11 +24,18 @@ def login():
     userID = data.get('userID')
     password = data.get('password')
 
-    dict = {}
     
-    if username and password:
+    
+    if username and password and userID:
+
+        validLogin = userHandler.validateUser({"userName":username, "userID":userID, "password":password})
         # Call the login function from the Database class
-        return jsonify({'message': 'Login successful'})
+
+        if validLogin == True:
+            return jsonify({'message': 'Login successful'})
+        
+        else:
+            return jsonify({'message': 'Invalid Login'})
     else:
         return jsonify({'message': 'Invalid request'})
 
@@ -34,13 +44,14 @@ def login():
 def signup():
     data = request.get_json()
     username = data.get('username')
+    userID = data.get('userID')
     password = data.get('password')
     
-    if username and password:
+    if username and password and userID:
         # Call the signup function from the Database class
 
-        result = False
-        if result == True:
+        validLogin = userHandler.addUser({"userName":username, "userID":userID, "password":password})
+        if validLogin == False:
             return jsonify({'message': 'Username has already been taken'})
         else:
             return jsonify({'message': 'User registered successfully'})
