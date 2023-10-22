@@ -8,9 +8,10 @@
         "-s",
         "./Database",
         "-p",
-        "test_*.py"
+        "test*.py"
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.testing.nosePath": "nosetests"
+    "python.testing.nosePath": "nosetests",
+    "python.analysis.autoImportCompletions": true
 }

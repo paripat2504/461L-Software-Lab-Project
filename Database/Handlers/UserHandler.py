@@ -1,8 +1,9 @@
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import uuid
+import bcrypt
 import DB_init
 import ast
 
@@ -27,13 +28,15 @@ class UserHandler:
 
     def addUser(self, criteria : dict):
 
-        
+        password = criteria['password'].encode('utf-8')
+
+        hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
 
         userDocument = {
-            "userName": criteria.get('userName'),
-            "password": criteria.get('password'),
-            "userID" : criteria.get('userID'),
-            "projects" : criteria.get('projects')
+            "userName": criteria["userName"],
+            "password": hashed_password,
+            "userID" : criteria['userID'],
+            "projects" : criteria['projects']
         }
 
         self.__users.insert_one(userDocument)
@@ -41,6 +44,21 @@ class UserHandler:
 
     def dropUser(self, userID : str):
         self.__users.delete_one( {"userID" : userID})
+
+    def validateUser(self, login : dict):
+        attemptedLogin = login['password'].encode('utf-8')
+        validLogin : bool = False
+        loginDict = {'userID':login["userID"]}
+
+        retrievedDict, exists = self.findUser(loginDict, {'password':1,'_id':0})
+        if exists == True:
+            retrievedPass = retrievedDict['password']
+
+            if bcrypt.checkpw(attemptedLogin,retrievedPass):
+                validLogin = True
+
+
+        return validLogin
 
 
     def findUser(self, criteria : dict, fieldToReturn : dict):
