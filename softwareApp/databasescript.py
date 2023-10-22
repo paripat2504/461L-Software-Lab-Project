@@ -39,7 +39,7 @@ class Database:
             return False
         
         
-
+db = Database()
 
 
 while(1):
