@@ -1,8 +1,9 @@
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import uuid
+import bcrypt
 import DB_init
 import ast
 
@@ -26,14 +27,19 @@ class UserHandler:
         self.__users = self.__mongo.getUsers()
 
     def addUser(self, criteria : dict):
+        userAdded = False
+        password = criteria['password'].encode('utf-8')
 
-        
+
+
+
+        hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
 
         userDocument = {
-            "userName": criteria.get('userName'),
-            "password": criteria.get('password'),
-            "userID" : criteria.get('userID'),
-            "projects" : criteria.get('projects')
+            "userName": criteria["userName"],
+            "password": hashed_password,
+            "userID" : criteria['userID'],
+            "projects" : []
         }
 
         self.__users.insert_one(userDocument)
@@ -41,6 +47,21 @@ class UserHandler:
 
     def dropUser(self, userID : str):
         self.__users.delete_one( {"userID" : userID})
+
+    def validateUser(self, login : dict):
+        attemptedLogin = login['password'].encode('utf-8')
+        validLogin : bool = False
+        loginDict = {'userID':login["userID"]}
+
+        retrievedDict, exists = self.findUser(loginDict, {'password':1,'_id':0})
+        if exists == True:
+            retrievedPass = retrievedDict['password']
+
+            if bcrypt.checkpw(attemptedLogin,retrievedPass):
+                validLogin = True
+
+
+        return validLogin
 
 
     def findUser(self, criteria : dict, fieldToReturn : dict):
@@ -62,7 +83,7 @@ class UserHandler:
             return None, False
 
 
-    def addTeam(self, userID : str , projectName : str):
+    def addProjects(self, userID : str , projectName : str):
         criteria = {'userID' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)
@@ -79,7 +100,7 @@ class UserHandler:
         self.__users.update_one(criteria, update_operation)
 
 
-    def dropTeam(self, userID : str, projectName : str):
+    def dropProjects(self, userID : str, projectName : str):
         criteria = {'userID' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)
@@ -95,7 +116,7 @@ class UserHandler:
 
         self.__users.update_one(criteria, update_operation)
 
-    def editTeam(self, userID : str, prevProjectName : str, newProjectName):
+    def editProjects(self, userID : str, prevProjectName : str, newProjectName):
         criteria = {'userName' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)
