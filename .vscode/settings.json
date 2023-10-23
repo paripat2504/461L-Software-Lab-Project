@@ -1,17 +1,20 @@
 {
     "python.analysis.extraPaths": [
         "./Database/Handlers",
-        "./softwareApp/Database/Handlers"
+        "./softwareApp/Database/Handlers",
+        "./tests"
     ],
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./Database",
+        "./tests",
         "-p",
-        "test*.py"
+        "test_*.py"
     ],
-    "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.testing.nosePath": "nosetests",
-    "python.analysis.autoImportCompletions": true
+    "python.testing.unittestCwd": "${workspaceFolder}",
+    "python.analysis.autoImportCompletions": true,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.pytestEnabled": false,
+
 }

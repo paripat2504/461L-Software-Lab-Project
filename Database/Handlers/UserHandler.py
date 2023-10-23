@@ -27,7 +27,7 @@ class UserHandler:
         self.__users = self.__mongo.getUsers()
 
     def addUser(self, criteria : dict):
-
+        userAdded = False
         password = criteria['password'].encode('utf-8')
 
 
@@ -43,7 +43,6 @@ class UserHandler:
         }
 
         self.__users.insert_one(userDocument)
-        x=5
 
 
     def dropUser(self, userID : str):
@@ -84,7 +83,7 @@ class UserHandler:
             return None, False
 
 
-    def addTeam(self, userID : str , projectName : str):
+    def addProjects(self, userID : str , projectName : str):
         criteria = {'userID' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)
@@ -101,7 +100,7 @@ class UserHandler:
         self.__users.update_one(criteria, update_operation)
 
 
-    def dropTeam(self, userID : str, projectName : str):
+    def dropProjects(self, userID : str, projectName : str):
         criteria = {'userID' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)
@@ -117,7 +116,7 @@ class UserHandler:
 
         self.__users.update_one(criteria, update_operation)
 
-    def editTeam(self, userID : str, prevProjectName : str, newProjectName):
+    def editProjects(self, userID : str, prevProjectName : str, newProjectName):
         criteria = {'userName' : userID}
         fToReturn = {'projects' : 1, '_id' : 0}
         matched = self.findUser(criteria, fToReturn)

@@ -1,6 +1,5 @@
 # Import necessary modules
 import json
-from re import T
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 #from databasescript import Database  # Import the Database class
@@ -19,15 +18,14 @@ CORS(app)
 def login():
     data = request.get_json()
 
-    username = data.get('username')
     userID = data.get('userID')
     password = data.get('password')
 
     
     
-    if username and password and userID:
+    if userID and password:
 
-        validLogin = userHandler.validateUser({"userName":username, "userID":userID, "password":password})
+        validLogin = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
 
         if validLogin == True:
@@ -42,7 +40,7 @@ def login():
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    username = data.get('username')
+    username = data.get('userName')
     userID = data.get('userID')
     password = data.get('password')
     
@@ -59,5 +57,6 @@ def signup():
 
 # Run the Flask application
 if __name__ == '__main__':
-    userHandler = uH(False)
+    userHandler = uH(True)
     app.run(debug=True)
+    userHandler.dropUserCollection()
