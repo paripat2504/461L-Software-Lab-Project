@@ -57,4 +57,3 @@ while(1):
         print(db.login(userID, passWord))
     else:
         print("Invalid Response")
-        x=5
