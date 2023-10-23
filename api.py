@@ -11,7 +11,6 @@ from Database.Handlers.UserHandler import UserHandler as uH
 # Create the Flask application
 app = Flask(__name__)
 CORS(app)
-userHandler = uH(False)
 
 # Create an instance of the Database class
 
@@ -60,4 +59,5 @@ def signup():
 
 # Run the Flask application
 if __name__ == '__main__':
+    userHandler = uH(False)
     app.run(debug=True)

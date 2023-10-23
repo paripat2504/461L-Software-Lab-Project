@@ -30,16 +30,20 @@ class UserHandler:
 
         password = criteria['password'].encode('utf-8')
 
+
+
+
         hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
 
         userDocument = {
             "userName": criteria["userName"],
             "password": hashed_password,
             "userID" : criteria['userID'],
-            "projects" : criteria['projects']
+            "projects" : []
         }
 
         self.__users.insert_one(userDocument)
+        x=5
 
 
     def dropUser(self, userID : str):

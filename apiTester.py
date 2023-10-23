@@ -4,7 +4,7 @@ import requests
 import json
 
 # Define the URL of the Flask API endpoint
-url = 'http://localhost:5000/api/signup'  # Replace with the actual URL
+url = 'http://localhost:5000/signup'  # Replace with the actual URL
 
 # Define the JSON data you want to send
 data = {
