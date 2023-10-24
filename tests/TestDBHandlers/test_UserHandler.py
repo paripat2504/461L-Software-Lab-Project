@@ -5,10 +5,10 @@ import sys
 import os
 
 import pymongo
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 
-from Handlers import UserHandler
+from Database.Handlers import UserHandler
 import unittest
 
 # Replace these with your MongoDB connection details
