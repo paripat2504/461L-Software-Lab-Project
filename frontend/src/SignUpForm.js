@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router";
-import { useLocation } from 'react-router-dom';
-
 function SignUpForm() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const location = useLocation();
-  const { dummyDatabase } = location.state;
 
   const handleUsername = (e) => {
     setUsername(e.target.value); 
@@ -18,9 +14,31 @@ function SignUpForm() {
     setPassword(e.target.value); 
   }
 
-  const handleSubmit = () => {
-    dummyDatabase.set(username, password);
-    navigate('/');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ userName: username, password: password, userID: 10 })
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+
+      if (data.message === "User registered successfully") {
+          alert("User registered successfully")
+          navigate('/');
+      } else if (data.message === "User already exists") {
+          alert("User already exists");
+      } else {
+          alert("An error occured: " + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
     return (
