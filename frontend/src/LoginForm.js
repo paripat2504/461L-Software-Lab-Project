@@ -24,7 +24,7 @@ function LoginForm() {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ userID: username, password })
+            body: JSON.stringify({ userID:username, password })
           });
         
           const data = await response.json();
@@ -46,7 +46,7 @@ function LoginForm() {
           <div>
             <label>User ID</label>
             <input type="text"
-              placeholder='Enter your username'
+              placeholder='Enter your User ID'
               style={{marginRight:'10px'}}
               value={username}
               onChange={handleUsername}

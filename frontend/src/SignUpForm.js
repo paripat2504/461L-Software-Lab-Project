@@ -4,7 +4,10 @@ function SignUpForm() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
+  const [userID, setUserID] = useState('');
   const [password, setPassword] = useState('');
+  const [secondPassword, setSecondPassword] = useState('');
+
 
   const handleUsername = (e) => {
     setUsername(e.target.value); 
@@ -14,15 +17,33 @@ function SignUpForm() {
     setPassword(e.target.value); 
   }
 
+  const handleSecondPassword = (e) => {
+    setSecondPassword(e.target.value); 
+  }
+
+  const handleUserID = (e) => {
+    setUserID(e.target.value); 
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(password !== secondPassword) {
+      alert("Entered passwords do not match");
+      return;
+    }
+
+    if(username === '' || password === '' || userID === '' || secondPassword === '') {
+      alert("All fields were not filled out");
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-          body: JSON.stringify({ userName: username, password: password, userID: 10 })
+          body: JSON.stringify({ userName:username, password:password, userID:userID })
       });
 
       const data = await response.json();
@@ -46,10 +67,12 @@ function SignUpForm() {
       <header className="SignUpForm-header">
         <h1>Sign Up</h1>
           <div>
-            <label>Full Name</label>
+            <label>User ID</label>
             <input type="text"
-              placeholder='Enter your full name'
+              placeholder='Enter your User ID'
               style={{marginRight:'10px'}}
+              value={userID}
+              onChange={handleUserID}
             />
           </div>
           <div>
@@ -72,12 +95,8 @@ function SignUpForm() {
           <label>Re-enter Password</label>
             <input type="password"
               placeholder='Enter password again'
-            />
-          </div>
-          <div>
-            <label>E-mail</label>
-            <input type="email"
-              placeholder='Enter your e-mail addresss'
+              value={secondPassword}
+              onChange={handleSecondPassword}
             />
           </div>
           <button type="submit" onClick={() => {navigate('/')}} style={{marginRight:'20px'}}>Back</button>
