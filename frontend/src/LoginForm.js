@@ -3,9 +3,6 @@ import { useNavigate } from "react-router";
 
 function LoginForm() {
     const navigate = useNavigate();
-    //PLACEHOLDER UNTIL WE CONNECT TO BACKEND
-    const dummyDatabase = new Map();
-    dummyDatabase.set('samant', 'SE-god');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -19,20 +16,28 @@ function LoginForm() {
       setPassword(e.target.value); 
     }
   
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
-        //PLACEHOLDER LOGIC
-        var msg = ''
-        if (dummyDatabase.has(username)) {
-            msg = `Username '${username}' exists with password '${dummyDatabase.get(username)}'`;
-          } else {
-            msg = `Access denied`;
-          }
-        setMessage(msg);
+        try {
+          const response = await fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userID: username, password })
+          });
+        
+          const data = await response.json();
+          //Handle message
+          setMessage(data.message);
+        } catch (err) {
+          console.error(err);
+          setMessage("An error occured: " + err)
+        };
     };
 
     const handleSignupClick = () => {
-      navigate('/signup', { state: { dummyDatabase } });
+      navigate('/signup');
     };
   
     return (
