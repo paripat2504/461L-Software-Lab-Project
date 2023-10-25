@@ -24,10 +24,10 @@ def login():
     
     
     if userID and password:
-        
+
         validLogin = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
-        
+
         if validLogin == True:
             return jsonify({'message': 'Login successful'})
         
