@@ -7,6 +7,7 @@ from flask_cors import CORS
 #from databasescript import Database  # Import the Database class
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Database/Handlers/')))
 
 
@@ -32,14 +33,14 @@ def login():
     
     if userID and password:
         
-        validLogin = userHandler.validateUser({"userID":userID, "password":password})
+        validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
         
         if validLogin == True:
             return jsonify({'message': 'Login successful'})
         
         else:
-            return jsonify({'message': 'Invalid Login'})
+            return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request'})
 
@@ -54,9 +55,9 @@ def signup():
     if username and password and userID:
         # Call the signup function from the Database class
 
-        validLogin = userHandler.addUser({"userName":username, "userID":userID, "password":password})
+        validLogin, _err = userHandler.addUser({"userName":username, "userID":userID, "password":password})
         if validLogin == False:
-            return jsonify({'message': 'Username has already been taken'})
+            return jsonify({'message': _err})
         else:
             return jsonify({'message': 'User registered successfully'})
     else:

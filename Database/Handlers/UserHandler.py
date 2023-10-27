@@ -1,6 +1,8 @@
 import sys
 import os
 
+from flask import jsonify
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import bcrypt
@@ -28,23 +30,25 @@ class UserHandler:
 
     def addUser(self, criteria : dict):
         userAdded = False
-        errorMsg = ""
         password = criteria['password'].encode('utf-8')
+        _err = "User already exists with that username or userID"
 
 
+        if self.findUser({"userName": criteria['userName']},{})[1] == False or self.findUser({'userID': criteria['userID']},{})[1] == False:
+            hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
 
+            userDocument = {
+                "userName": criteria["userName"],
+                "password": hashed_password,
+                "userID" : criteria['userID'],
+                "projects" : []
+            }
 
-        hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
+            self.__users.insert_one(userDocument)
+            userAdded = True
+            __err =  None           
 
-        userDocument = {
-            "userName": criteria["userName"],
-            "password": hashed_password,
-            "userID" : criteria['userID'],
-            "projects" : []
-        }
-
-        self.__users.insert_one(userDocument)
-        return userAdded, errorMsg
+        return userAdded, _err
 
 
     def dropUser(self, userID : str):
@@ -54,6 +58,7 @@ class UserHandler:
         attemptedLogin = login['password'].encode('utf-8')
         validLogin : bool = False
         loginDict = {'userID':login["userID"]}
+        _err = "Incorrect UserID or Password"
 
         retrievedDict, exists = self.findUser(loginDict, {'password':1,'_id':0})
         if exists == True:
@@ -61,9 +66,11 @@ class UserHandler:
 
             if bcrypt.checkpw(attemptedLogin,retrievedPass):
                 validLogin = True
+                _err = None
 
 
-        return validLogin
+
+        return validLogin, _err
 
 
     def findUser(self, criteria : dict, fieldToReturn : dict):
@@ -141,14 +148,10 @@ class UserHandler:
         self.__users.update_one(criteria, update_operation)
 
     
-    def dropUserCollection(self):
+    def resetUserCollection(self):
         if(self.__debugMode == True):
-            self.__users.drop()
+            self.__users.delete_many({})
 
 
 
 
-        
-        
-        
-        
