@@ -29,12 +29,7 @@ class UserHandler:
     def addUser(self, criteria : dict):
         userAdded = False
         password = criteria['password'].encode('utf-8')
-
-
-
-
         hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
-
         userDocument = {
             "userName": criteria["userName"],
             "password": hashed_password,
@@ -59,8 +54,6 @@ class UserHandler:
 
             if bcrypt.checkpw(attemptedLogin,retrievedPass):
                 validLogin = True
-
-
         return validLogin
 
 
@@ -69,7 +62,6 @@ class UserHandler:
         value = self.__users.find_one(criteria,fieldToReturn)
         if(value != None):
             doesUserExist = True
-
         return value, doesUserExist
 
     def editUser(self, criteria : dict, valuesToUpdate : dict):
@@ -83,60 +75,59 @@ class UserHandler:
             return None, False
 
 
-    def addProjects(self, userID : str , projectName : str):
-        criteria = {'userID' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        mylist = ast.literal_eval(str(matched)[10:-1])
+    # def addProjects(self, userID : str , projectName : str):
+    #     criteria = {'userID' : userID}
+    #     fToReturn = {'projects' : 1, '_id' : 0}
+    #     matched = self.findUser(criteria, fToReturn)
+    #     mylist = ast.literal_eval(str(matched)[10:-1])
 
-        mylist.append(projectName)
+    #     mylist.append(projectName)
 
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
+    #     update_operation = {'$set': {
+    #         'projects' : mylist
+    #     }}
 
-        criteria = {'userID' : userID}
+    #     criteria = {'userID' : userID}
 
-        self.__users.update_one(criteria, update_operation)
-
-
-    def dropProjects(self, userID : str, projectName : str):
-        criteria = {'userID' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        mylist = ast.literal_eval(str(matched)[10:-1])
-
-        mylist.remove(projectName)
-
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
-
-        criteria = {'userName' : userID}
-
-        self.__users.update_one(criteria, update_operation)
-
-    def editProjects(self, userID : str, prevProjectName : str, newProjectName):
-        criteria = {'userName' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        strippedMatched = str(matched)[13:-1]
-        mylist = ast.literal_eval(strippedMatched)
+    #     self.__users.update_one(criteria, update_operation)
 
 
-        for i in range(len(mylist)):
+    # def dropProjects(self, userID : str, projectName : str):
+    #     criteria = {'userID' : userID}
+    #     fToReturn = {'projects' : 1, '_id' : 0}
+    #     matched = self.findUser(criteria, fToReturn)
+    #     mylist = ast.literal_eval(str(matched)[10:-1])
 
-            if mylist[i] == prevProjectName:
-                mylist[i] = newProjectName
-                
+    #     mylist.remove(projectName)
 
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
+    #     update_operation = {'$set': {
+    #         'projects' : mylist
+    #     }}
 
-        criteria = {'userName' : userID}
+    #     criteria = {'userName' : userID}
 
-        self.__users.update_one(criteria, update_operation)
+    #     self.__users.update_one(criteria, update_operation)
+
+    # def editProjects(self, userID : str, prevProjectName : str, newProjectName):
+    #     criteria = {'userName' : userID}
+    #     fToReturn = {'projects' : 1, '_id' : 0}
+    #     matched = self.findUser(criteria, fToReturn)
+    #     strippedMatched = str(matched)[13:-1]
+    #     mylist = ast.literal_eval(strippedMatched)
+
+
+    #     for i in range(len(mylist)):
+
+    #         if mylist[i] == prevProjectName:
+    #             mylist[i] = newProjectName
+
+    #     update_operation = {'$set': {
+    #         'projects' : mylist
+    #     }}
+
+    #     criteria = {'userName' : userID}
+
+    #     self.__users.update_one(criteria, update_operation)
 
     
     def dropUserCollection(self):

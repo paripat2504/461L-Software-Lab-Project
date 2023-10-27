@@ -21,8 +21,6 @@ def login():
     userID = data.get('userID')
     password = data.get('password')
 
-    
-    
     if userID and password:
 
         validLogin = userHandler.validateUser({"userID":userID, "password":password})
