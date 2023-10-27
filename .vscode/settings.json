@@ -2,7 +2,8 @@
     "python.analysis.extraPaths": [
         "./Database/Handlers",
         "./softwareApp/Database/Handlers",
-        "./tests"
+        "./tests",
+        "./API"
     ],
     "python.testing.unittestArgs": [
         "-v",

@@ -28,6 +28,7 @@ class UserHandler:
 
     def addUser(self, criteria : dict):
         userAdded = False
+        errorMsg = ""
         password = criteria['password'].encode('utf-8')
 
 
@@ -43,6 +44,7 @@ class UserHandler:
         }
 
         self.__users.insert_one(userDocument)
+        return userAdded, errorMsg
 
 
     def dropUser(self, userID : str):

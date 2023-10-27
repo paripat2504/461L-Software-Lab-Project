@@ -2,10 +2,17 @@
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+#import UserHandler
 #from databasescript import Database  # Import the Database class
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Database/Handlers/')))
 
 
-from Database.Handlers.UserHandler import UserHandler as uH
+from UserHandler import UserHandler as uH
+
+userHandler = uH(True)
 
 # Create the Flask application
 app = Flask(__name__)
@@ -20,7 +27,7 @@ def login():
 
     userID = data.get('userID')
     password = data.get('password')
-
+    
     
     
     if userID and password:
@@ -57,6 +64,4 @@ def signup():
 
 # Run the Flask application
 if __name__ == '__main__':
-    userHandler = uH(True)
     app.run(debug=True)
-    userHandler.dropUserCollection()
