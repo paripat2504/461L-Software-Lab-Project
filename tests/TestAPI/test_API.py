@@ -1,11 +1,25 @@
-import json
-import unittest
-import requests
-import json
 
-class test_API(unittest.TestCase):
+import json
+import requests
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../API/')))
+import api
+
+from flask import Flask
+from flask_testing import TestCase
+
+
+
+
+class test_API(TestCase):
+
+    def create_app(self):
+        return api.app
+    
+
     def test_APIAddUser(self):
-        
         customMsg = "Succeeded!"
         # Define the URL of the Flask API endpoint
         url = 'http://localhost:5000/signup'  # Replace with the actual URL
@@ -25,8 +39,8 @@ class test_API(unittest.TestCase):
         headers = {'Content-Type': 'application/json'}
 
         # Make a POST request with the JSON data
-        try:
-            response = requests.post(url, data=json_data, headers=headers)
+        try:    
+            response = self.client.post(url, data=json_data, headers=headers)
             # Check the response
             self.assertEqual(response.status_code,200,customMsg)
             if response.status_code == 200:
@@ -58,6 +72,6 @@ class test_API(unittest.TestCase):
             self.fail(f"An unexpected error occurred: {e}")
 
 
-
 if __name__ == '__main__':
+    import unittest
     unittest.main()
