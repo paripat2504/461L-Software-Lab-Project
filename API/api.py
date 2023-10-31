@@ -59,7 +59,7 @@ def signup():
         if validLogin == False:
             return jsonify({'message': _err})
         else:
-            return jsonify({'message': 'User registered successfully'})
+            return jsonify({'message': 'User successfully created'})
     else:
         return jsonify({'message': 'Invalid request'})
 
