@@ -13,7 +13,6 @@ import unittest
 
 # Replace these with your MongoDB connection details
 
-
 UHandler = UserHandler.UserHandler()
 
 def generateUserName(length=8):
@@ -22,7 +21,7 @@ def generateUserName(length=8):
     return username
 
 def dropUserCollection():
-    UHandler.dropUserCollection()
+    UHandler.resetUserCollection()
 
 class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
