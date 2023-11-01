@@ -31,7 +31,6 @@ class UserHandler:
     def addUser(self, criteria : dict):
         userAdded = False
         password = criteria['password'].encode('utf-8')
-<<<<<<< HEAD
         hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
         userDocument = {
             "userName": criteria["userName"],
@@ -41,7 +40,6 @@ class UserHandler:
         }
 
         self.__users.insert_one(userDocument)
-=======
         _err = "User already exists with that username or userID"
 
 
@@ -60,7 +58,6 @@ class UserHandler:
             __err =  None           
 
         return userAdded, _err
->>>>>>> updating-api-test
 
 
     def dropUser(self, userID : str):
@@ -78,16 +75,10 @@ class UserHandler:
 
             if bcrypt.checkpw(attemptedLogin,retrievedPass):
                 validLogin = True
-<<<<<<< HEAD
-        return validLogin
-=======
-                _err = None
 
 
 
         return validLogin, _err
->>>>>>> updating-api-test
-
 
     def findUser(self, criteria : dict, fieldToReturn : dict):
         doesUserExist = False
