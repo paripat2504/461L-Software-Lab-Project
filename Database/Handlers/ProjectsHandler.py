@@ -23,6 +23,7 @@ class ProjectHandler:
         self.__Projects = self.__mongo.getProjects()
     def createProject(self, criteria : dict):
         projectAdded = False
+        _err = "Project with this name already exists"
         projectDocument = {
             "projectName": criteria["projectName"],
             "projectDescription": criteria["description"],
@@ -65,7 +66,7 @@ class ProjectHandler:
         projectID = criteria["id"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
         listOfUsers = existingProject["users"]
-        if username in listofUsers:
+        if username in listOfUsers:
             return True
         else: 
             return False
