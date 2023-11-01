@@ -75,3 +75,40 @@ class ProjectHandler:
             return True
         else: 
             return False
+    def UserProjectIds(self, username):
+        #method to return all the projectIDs the user is currently a part of 
+        user_projects = []
+        _err = None
+        for project in self.__Projects.find({"users": username}):
+            projectID = project["projectID"]
+            user_projects.append(projectID)
+        if len(user_projecs) == 0:
+            _err = "Username is not in any projects"
+        return user_projects, _err
+    def returnUserProjects(self, projects):
+        _err = None
+        user_projects = []
+        for project in self.__Projects.find({"users": username}):
+            user_projects.append(project)
+        if len(user_projects) == 0:
+            _err = "Username is not in any projects"
+        return user_projects, _err
+    def removeUserFromProject(self, criteria : dict):
+        username = criteria['username']
+        projectId = criteria['projectID']
+        project = self.__Projects.find_one({"projectID": projectID})
+        _err = None
+        if project is not None:
+            users = project.get("users", [])
+            if username in users:
+                users.remove(username)
+                project["users"] = users
+                self.__Projects.update_one({"projectID": projectID}, {"$set": project})
+                return True, _err  # User removed successfully
+        _err = "Project or User is not found"
+        return False, _err  # Project or user not found
+
+        
+        
+        
+        
