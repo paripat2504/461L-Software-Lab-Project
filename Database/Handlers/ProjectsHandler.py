@@ -33,6 +33,21 @@ class ProjectHandler:
             "HardwareSet1CheckedOut" : 0
         }
         self.__Projects.insert_one(projectDocument)
+        doesProjectExist = checkExistingProject(criteria['id'])
+        _err = "Project already exists with that projectID"
+        if doesProjectExist = False:    
+            projectDocument = {
+                "projectName": criteria["projectName"],
+                "projectDescription": criteria["description"],
+                "projectID" : criteria['id'],
+                "users" : [criteria["userName"]],
+                "HardwareSet1CheckedOut" : 0,
+                "HardwareSet2CheckedOut" : 0
+            }
+            self.__Projects.insert_one(projectDocument)
+            projectAdded = True
+            _err = None
+        return projectAdded, _err
     def UseExistingProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
         projectID = criteria["id"]
@@ -46,12 +61,12 @@ class ProjectHandler:
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
         doesProjectExist = False
-        project = self.__Projects.find_one({"projectID" : projectID})
+        project = self.__projects.find_one({"projectID" : projectID})
         if(project != None):
             doesProjectExist = True
         return doesProjectExist
     #method to change number of checkedout hardware sets for each project
-    def checkOutHardwareSets(self, criteria : dict):
+    def updateHardwareSets(self, criteria : dict):
         #update checkedOutFields in Project
         projectID = criteria["id"]
         HW1 = criteria["HardwarSet1"]
@@ -70,3 +85,40 @@ class ProjectHandler:
             return True
         else: 
             return False
+    def UserProjectIds(self, username):
+        #method to return all the projectIDs the user is currently a part of 
+        user_projects = []
+        _err = None
+        for project in self.__Projects.find({"users": username}):
+            projectID = project["projectID"]
+            user_projects.append(projectID)
+        if len(user_projecs) == 0:
+            _err = "Username is not in any projects"
+        return user_projects, _err
+    def returnUserProjects(self, projects):
+        _err = None
+        user_projects = []
+        for project in self.__Projects.find({"users": username}):
+            user_projects.append(project)
+        if len(user_projects) == 0:
+            _err = "Username is not in any projects"
+        return user_projects, _err
+    def removeUserFromProject(self, criteria : dict):
+        username = criteria['username']
+        projectId = criteria['projectID']
+        project = self.__Projects.find_one({"projectID": projectID})
+        _err = None
+        if project is not None:
+            users = project.get("users", [])
+            if username in users:
+                users.remove(username)
+                project["users"] = users
+                self.__Projects.update_one({"projectID": projectID}, {"$set": project})
+                return True, _err  # User removed successfully
+        _err = "Project or User is not found"
+        return False, _err  # Project or user not found
+
+        
+        
+        
+        
