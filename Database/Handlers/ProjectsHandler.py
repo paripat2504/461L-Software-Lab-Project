@@ -45,7 +45,7 @@ class ProjectHandler:
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
         doesProjectExist = False
-        project = self.__Projects.find_one("projectID" : projectID)
+        project = self.__Projects.find_one({"projectID" : projectID})
         if(project != None):
             doesProjectExist = True
         return doesProjectExist
