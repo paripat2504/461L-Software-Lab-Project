@@ -12,8 +12,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 
 
 from UserHandler import UserHandler as uH
+from ProjectsHandler import ProjectHandler as projH
 
 userHandler = uH(True)
+projHandler = projH(True)
 
 # Create the Flask application
 app = Flask(__name__)
