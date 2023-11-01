@@ -23,15 +23,21 @@ class ProjectHandler:
         self.__Projects = self.__mongo.getProjects()
     def createProject(self, criteria : dict):
         projectAdded = False
-        projectDocument = {
-            "projectName": criteria["projectName"],
-            "projectDescription": criteria["description"],
-            "projectID" : criteria['id'],
-            "users" : [criteria["userName"]],
-            "HardwareSet1CheckedOut" : 0,
-            "HardwareSet1CheckedOut" : 0
-        }
-        self.__Projects.insert_one(projectDocument)
+        doesProjectExist = checkExistingProject(criteria['id'])
+        _err = "Project already exists with that projectID"
+        if doesProjectExist = False:    
+            projectDocument = {
+                "projectName": criteria["projectName"],
+                "projectDescription": criteria["description"],
+                "projectID" : criteria['id'],
+                "users" : [criteria["userName"]],
+                "HardwareSet1CheckedOut" : 0,
+                "HardwareSet2CheckedOut" : 0
+            }
+            self.__Projects.insert_one(projectDocument)
+            projectAdded = True
+            _err = None
+        return projectAdded, _err
     def UseExistingProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
         projectID = criteria["id"]
@@ -45,12 +51,12 @@ class ProjectHandler:
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
         doesProjectExist = False
-        project = self.__Projects.find_one({"projectID" : projectID})
+        project = self.__projects.find_one({"projectID" : projectID})
         if(project != None):
             doesProjectExist = True
         return doesProjectExist
     #method to change number of checkedout hardware sets for each project
-    def checkOutHardwareSets(self, criteria : dict):
+    def updateHardwareSets(self, criteria : dict):
         #update checkedOutFields in Project
         projectID = criteria["id"]
         HW1 = criteria["HardwarSet1"]
