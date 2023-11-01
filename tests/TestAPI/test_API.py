@@ -47,7 +47,7 @@ class test_API(TestCase):
             response = self.client.post(url, data=json_data, headers=headers)
             # Check the response
             self.assertEqual(response.status_code,200)
-            self.assertEqual(response.json['message'],'User registered successfully')
+            self.assertEqual(response.json['message'],'User successfully created')
 
         except requests.exceptions.RequestException as e:
             # Handle other request-related exceptions
@@ -83,7 +83,7 @@ class test_API(TestCase):
             response = self.client.post(url, data=json_data, headers=headers)
             # Check the response
             self.assertEqual(response.status_code,200)
-            self.assertEqual(response.json['message'],'User registered successfully')
+            self.assertEqual(response.json['message'],'User successfully created')
             response = self.client.post(url, data=json_data, headers=headers)
             self.assertEqual(response.status_code,200)
             self.assertEqual(response.json['message'],'User already exists with that username or userID')
