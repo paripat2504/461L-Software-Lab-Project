@@ -38,8 +38,6 @@ class UserHandler:
             "userID" : criteria['userID'],
             "projects" : []
         }
-
-        self.__users.insert_one(userDocument)
         _err = "User already exists with that username or userID"
 
 

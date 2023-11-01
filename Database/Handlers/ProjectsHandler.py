@@ -45,7 +45,7 @@ class ProjectHandler:
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
         doesProjectExist = False
-        project = self.__projects.find_one("projectID" : projectID)
+        project = self.__Projects.find_one("projectID" : projectID)
         if(project != None):
             doesProjectExist = True
         return doesProjectExist
@@ -57,7 +57,7 @@ class ProjectHandler:
         HW2 = criteria["HardwareSet2"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
         existingProject["HardwareSet1CheckedOut"] = HW1
-        existingProjetc["HardwareSet2CheckedOut"] = HW2
+        existingProject["HardwareSet2CheckedOut"] = HW2
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
     def isUserInProject(self, criteria : dict):
         #check to see if user is in the project

@@ -28,13 +28,9 @@ def login():
 
     userID = data.get('userID')
     password = data.get('password')
-<<<<<<< HEAD:api.py
-
-=======
     
     
     
->>>>>>> updating-api-test:API/api.py
     if userID and password:
         
         validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
