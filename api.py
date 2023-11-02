@@ -32,7 +32,7 @@ def login():
             return jsonify({'message': 'Login successful'})
         
         else:
-            return jsonify({'message': 'Invalid Login'})
+            return jsonify({'message': 'Invalid credentials'})
     else:
         return jsonify({'message': 'Invalid request'})
 

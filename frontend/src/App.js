@@ -8,7 +8,7 @@ import SignUpForm from './SignUpForm';
 function App() {
   return (
     <Router>
-    <div className="App">
+    <div className="App bg-gray-100">
       <header className="App-header">
         <Routes>
           <Route path="/" element={<LoginForm />} />
