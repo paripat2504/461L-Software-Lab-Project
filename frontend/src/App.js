@@ -1,13 +1,14 @@
 import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 import LoginForm from './LoginForm';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUpForm from './SignUpForm';
 
+
 function App() {
   return (
     <Router>
-    <div className="App">
+    <div className="App bg-gray-100">
       <header className="App-header">
         <Routes>
           <Route path="/" element={<LoginForm />} />
