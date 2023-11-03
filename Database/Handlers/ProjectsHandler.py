@@ -35,7 +35,7 @@ class ProjectHandler:
         self.__Projects.insert_one(projectDocument)
         doesProjectExist = checkExistingProject(criteria['id'])
         _err = "Project already exists with that projectID"
-        if doesProjectExist = False:    
+        if doesProjectExist == False:    
             projectDocument = {
                 "projectName": criteria["projectName"],
                 "projectDescription": criteria["description"],
