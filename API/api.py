@@ -84,6 +84,29 @@ def login():
         return jsonify({'message': 'Invalid request'})
     
     
+# Define login endpoint and logic
+@app.route('/project', methods=['POST'])
+def project():
+    data = request.get_json()
+    userName = data.get('userName')
+    projectName = data.get('projectName')
+    projectDescription = data.get('projectDescription')
+    projectID = data.get('projectID')
+    
+    if userName and projectName and projectDescription and projectID:
+        
+        projCreated, _err = projHandler.createProject({"userName":userName, "projectName":projectName, "projectDescription":projectDescription, "projectID":projectID, })
+        # Call the login function from the Database class
+        
+        if projCreated == True:
+            return jsonify({'message': 'Project Created successfully'})
+        
+        else:
+            return jsonify({'message': _err})
+    else:
+        return jsonify({'message': 'Invalid request'})
+    
+    
 # Run the Flask application
 if __name__ == '__main__':
     app.run(debug=True)
