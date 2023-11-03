@@ -4,17 +4,18 @@ import LoginForm from './LoginForm';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUpForm from './SignUpForm';
 import HomePage from './homePage';
-
+import AddProject from './tempAddProject';
 
 function App() {
   return (
     <Router>
-    <div className="App bg-gray-100">
+    <div className="App">
       <header className="App-header">
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/signup" element={<SignUpForm/>} />
           <Route path="/home" element={<HomePage/>} />
+          <Route path="/addproject" element={<AddProject/>} />
         </Routes>
       </header>
     </div>
