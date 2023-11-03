@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import LoginForm from './LoginForm';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUpForm from './SignUpForm';
+import HomePage from './homePage';
 
 
 function App() {
@@ -13,10 +14,12 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/signup" element={<SignUpForm/>} />
+          <Route path="/home" element={<HomePage/>} />
         </Routes>
       </header>
     </div>
     </Router>
+    
   );
 }
 

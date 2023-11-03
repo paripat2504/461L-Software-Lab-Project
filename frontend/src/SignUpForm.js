@@ -52,7 +52,7 @@ function SignUpForm() {
       if (data.message === "User registered successfully") {
           alert("User registered successfully")
           navigate('/');
-      } else if (data.message === "User already exists") {
+      } else if (data.message === "Username has already been taken") {
           alert("User already exists");
       } else {
           alert("An error occured: " + data.message);
@@ -64,7 +64,7 @@ function SignUpForm() {
 
     return (
     <div className="flex justify-center items-center h-screen w-screen">
-    <div className=" border-t-8 rounded-md border-amber-600 bg-white p-14 shadow-2xl w-96">
+    <div className="border-t-8 rounded-md border-amber-600 bg-white p-14 shadow-2xl w-96">
       <div className="SignUpForm">
         <header className="SignUpForm-header">
           <h1 className="font-bold text-center block text-3xl">Sign Up</h1>

@@ -34,7 +34,11 @@ function LoginForm() {
         
           const data = await response.json();
           //Handle message
-          setMessage(data.message);
+          if (data.message === "Login successful") {
+            navigate('/home');
+          } else {
+            setMessage(data.message);
+          }
         } catch (err) {
           console.error(err);
           setMessage("An error occured: " + err)
