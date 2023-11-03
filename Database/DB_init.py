@@ -6,7 +6,7 @@ class InitializeGlobals:
     def __init__(self, debugMode : bool):
         db_credsfile = open('Database\DB_creds.json', 'r')
         db_creds = json.load(db_credsfile)
-
+        db_credsfile.close()
         self.__database_name = db_creds.get('mongodb_name')
         self.__mongoDBuri = db_creds.get('mongodb_uri')
         if(debugMode == True):
@@ -19,8 +19,7 @@ class InitializeGlobals:
 
         self.__db = self.__client[self.__database_name]
         self.__users = self.__db.users
-        self.__teams = self.__db.teams
-
+        self.__Projects = self.__db.Projects
     
     def getDatabase_name(self):
         return self.__database_name
@@ -37,5 +36,5 @@ class InitializeGlobals:
     def getUsers(self):
         return self.__users
     
-    def getTeams(self):
-        return self.__teams
+    def getProjects(self):
+        return self.__Projects

@@ -10,7 +10,7 @@ function AddProject() {
     const [description, setDescription] = useState('');
     const [id, setID] = useState('');
 
-    const tempID = 'test';
+    const tempID = 'testtest';
 
     const handleName = (e) => {
         setName(e.target.value)
