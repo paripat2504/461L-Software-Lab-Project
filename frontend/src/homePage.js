@@ -5,7 +5,7 @@ import ProjectTable from './Projects';
 import Button from '@mui/material/Button';
 
 
-function HomePage() {
+function HomePage(props) {
   const navigate = useNavigate();
 
   const projects = [

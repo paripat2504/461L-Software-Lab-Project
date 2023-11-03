@@ -10,6 +10,8 @@ function AddProject() {
     const [description, setDescription] = useState('');
     const [id, setID] = useState('');
 
+    const tempID = 'test';
+
     const handleName = (e) => {
         setName(e.target.value)
     }
@@ -18,18 +20,34 @@ function AddProject() {
         setDescription(e.target.value)
     }
 
-
-    const handleConfirm = (e) => {
+    const handleConfirm = async (e) => {
         e.preventDefault();
-        // if(name === '' || description === '' || id === '') {
-        //     setMessage("Please fill out all fields");
-        //     return;
-        // }
+        if(name === '' || description === '' || id === '') {
+            return;
+        }
 
-        // DO FETCH TO ADD PROJECT ENDPOINT
+        try {
+            const response = await fetch('http://localhost:5000/project', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ userName:tempID, projectName:name, projectDescription:description, projectID:id })
+            });
+          
+            const data = await response.json();
+            //Handle message
+            if (data.message === "Login successful") {
+              navigate('/home');
+            } else {
+              alert(data.message);
+            }
+          } catch (err) {                                      
+            console.error(err);
+            alert("An error occured: " + err)
+          };
 
-        //reroute to homepage
-        navigate('/home');
+
     }
 
     const handleClick = (e) => {
