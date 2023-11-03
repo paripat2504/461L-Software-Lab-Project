@@ -37,10 +37,9 @@ function AddProject() {
           
             const data = await response.json();
             //Handle message
-            if (data.message === "Login successful") {
-              navigate('/home');
-            } else {
-              alert(data.message);
+            alert(data.message);
+            if(data.message == 'Project Created successfully'){
+                navigate('/home');
             }
           } catch (err) {                                      
             console.error(err);
@@ -74,7 +73,7 @@ function AddProject() {
             </div>
             <div>
                 <label className="text-gray-500 block mt-3">Description</label>
-                <input className="rounded px-4 py-3 w-full mt-1 bg-white text-gray-900 border border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-100" type="password"
+                <input className="rounded px-4 py-3 w-full mt-1 bg-white text-gray-900 border border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-100" type="text"
                 placeholder='Enter a description for your project'
                 value={description}
                 onChange={handleDescription}  
@@ -82,7 +81,7 @@ function AddProject() {
             </div>
             <div>
                 <label className="text-gray-500 block mt-3">Project ID</label>
-                <input className="rounded px-4 py-3 w-full mt-1 bg-white text-gray-900 border border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-100" type="password"
+                <input className="rounded px-4 py-3 w-full mt-1 bg-white text-gray-900 border border-gray-200 focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-100" type="text"
                 placeholder='Enter a Project ID'
                 value={id}
                 onChange={handleID}  
