@@ -92,7 +92,7 @@ class ProjectHandler:
         for project in self.__Projects.find({"users": username}):
             projectID = project["projectID"]
             user_projects.append(projectID)
-        if len(user_projecs) == 0:
+        if len(user_projects) == 0:
             _err = "Username is not in any projects"
         return user_projects, _err
     def returnUserProjects(self, projects):
