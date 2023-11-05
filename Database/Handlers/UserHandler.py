@@ -41,6 +41,7 @@ class UserHandler:
         _err = "User already exists with that username or userID"
 
 
+
         if self.findUser({"userName": criteria['userName']},{})[1] == False or self.findUser({'userID': criteria['userID']},{})[1] == False:
             hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
 
