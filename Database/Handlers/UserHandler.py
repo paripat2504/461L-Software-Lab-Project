@@ -1,6 +1,8 @@
 import sys
 import os
 
+from flask import jsonify
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import bcrypt
@@ -29,20 +31,32 @@ class UserHandler:
     def addUser(self, criteria : dict):
         userAdded = False
         password = criteria['password'].encode('utf-8')
-
-
-
-
         hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
-
         userDocument = {
             "userName": criteria["userName"],
             "password": hashed_password,
             "userID" : criteria['userID'],
             "projects" : []
         }
+        _err = "User already exists with that username or userID"
 
-        self.__users.insert_one(userDocument)
+
+
+        if self.findUser({"userName": criteria['userName']},{})[1] == False or self.findUser({'userID': criteria['userID']},{})[1] == False:
+            hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
+
+            userDocument = {
+                "userName": criteria["userName"],
+                "password": hashed_password,
+                "userID" : criteria['userID'],
+                "projects" : []
+            }
+
+            self.__users.insert_one(userDocument)
+            userAdded = True
+            __err =  None           
+
+        return userAdded, _err
 
 
     def dropUser(self, userID : str):
@@ -52,6 +66,7 @@ class UserHandler:
         attemptedLogin = login['password'].encode('utf-8')
         validLogin : bool = False
         loginDict = {'userID':login["userID"]}
+        _err = "Incorrect UserID or Password"
 
         retrievedDict, exists = self.findUser(loginDict, {'password':1,'_id':0})
         if exists == True:
@@ -61,15 +76,14 @@ class UserHandler:
                 validLogin = True
 
 
-        return validLogin
 
+        return validLogin, _err
 
     def findUser(self, criteria : dict, fieldToReturn : dict):
         doesUserExist = False
         value = self.__users.find_one(criteria,fieldToReturn)
         if(value != None):
             doesUserExist = True
-
         return value, doesUserExist
 
     def editUser(self, criteria : dict, valuesToUpdate : dict):
@@ -83,70 +97,11 @@ class UserHandler:
             return None, False
 
 
-    def addProjects(self, userID : str , projectName : str):
-        criteria = {'userID' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        mylist = ast.literal_eval(str(matched)[10:-1])
-
-        mylist.append(projectName)
-
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
-
-        criteria = {'userID' : userID}
-
-        self.__users.update_one(criteria, update_operation)
-
-
-    def dropProjects(self, userID : str, projectName : str):
-        criteria = {'userID' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        mylist = ast.literal_eval(str(matched)[10:-1])
-
-        mylist.remove(projectName)
-
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
-
-        criteria = {'userName' : userID}
-
-        self.__users.update_one(criteria, update_operation)
-
-    def editProjects(self, userID : str, prevProjectName : str, newProjectName):
-        criteria = {'userName' : userID}
-        fToReturn = {'projects' : 1, '_id' : 0}
-        matched = self.findUser(criteria, fToReturn)
-        strippedMatched = str(matched)[13:-1]
-        mylist = ast.literal_eval(strippedMatched)
-
-
-        for i in range(len(mylist)):
-
-            if mylist[i] == prevProjectName:
-                mylist[i] = newProjectName
-                
-
-        update_operation = {'$set': {
-            'projects' : mylist
-        }}
-
-        criteria = {'userName' : userID}
-
-        self.__users.update_one(criteria, update_operation)
-
     
-    def dropUserCollection(self):
+    def resetUserCollection(self):
         if(self.__debugMode == True):
-            self.__users.drop()
+            self.__users.delete_many({})
 
 
 
 
-        
-        
-        
-        
