@@ -22,7 +22,7 @@ def generateUserName(length=8):
     return username
 
 def dropUserCollection():
-    UHandler.dropUserCollection()
+    UHandler.resetUserCollection()
 
 class testUserHandler(unittest.TestCase):
     def testAddAndDropUser(self):
