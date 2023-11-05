@@ -64,5 +64,6 @@ class testUserHandler(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    dropUserCollection()
     unittest.main()
 
