@@ -63,25 +63,6 @@ def signup():
         return jsonify({'message': 'Invalid request'})
 
 
-# Define login endpoint and logic
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    userID = data.get('userID')
-    password = data.get('password')
-    
-    if userID and password:
-        
-        validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
-        # Call the login function from the Database class
-        
-        if validLogin == True:
-            return jsonify({'message': 'Login successful'})
-        
-        else:
-            return jsonify({'message': _err})
-    else:
-        return jsonify({'message': 'Invalid request'})
     
     
 # Define project endpoint and logic

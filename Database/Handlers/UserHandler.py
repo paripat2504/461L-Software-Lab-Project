@@ -32,19 +32,14 @@ class UserHandler:
         userAdded = False
         password = criteria['password'].encode('utf-8')
         hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
-        userDocument = {
-            "userName": criteria["userName"],
-            "password": hashed_password,
-            "userID" : criteria['userID'],
-            "projects" : []
-        }
         _err = "User already exists with that username or userID"
 
 
 
         if self.findUser({"userName": criteria['userName']},{})[1] == False or self.findUser({'userID': criteria['userID']},{})[1] == False:
             hashed_password = bcrypt.hashpw(password,bcrypt.gensalt())
-
+            userAdded = True
+            _err =  None  
             userDocument = {
                 "userName": criteria["userName"],
                 "password": hashed_password,
@@ -53,8 +48,7 @@ class UserHandler:
             }
 
             self.__users.insert_one(userDocument)
-            userAdded = True
-            __err =  None           
+         
 
         return userAdded, _err
 
