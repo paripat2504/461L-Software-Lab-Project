@@ -87,6 +87,26 @@ def project():
     else:
         return jsonify({'message': 'Invalid request'})
     
+# Define project endpoint and logic for joiningProject
+@app.route('/projectJoin', methods=['POST'])
+def projectJoin():
+    data = request.get_json()
+    userName = data.get('userName')
+    projectID = data.get('projectID')
+    
+    if userName and projectID:
+        
+        projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID, })
+        # Call the login function from the Database class
+        
+        if projJoined == True:
+            return jsonify({'message': 'Project Joined successfully'})
+        
+        else:
+            return jsonify({'message': _err})
+    else:
+        return jsonify({'message': 'Invalid request'})
+    
     
 # Run the Flask application
 if __name__ == '__main__':

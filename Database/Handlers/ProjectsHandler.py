@@ -30,7 +30,6 @@ class ProjectHandler:
         return doesProjectExist
     def createProject(self, criteria : dict):
         projectAdded = False
-        _err = "Project with this name already exists"
         doesProjectExist = self.checkExistingProject(criteria['projectID'])
         _err = "Project already exists with that projectID"
         if doesProjectExist == False:    
@@ -46,20 +45,26 @@ class ProjectHandler:
             projectAdded = True
             _err = None
         return projectAdded, _err
-    def UseExistingProject(self, criteria : dict):
+    def joinProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
-        projectID = criteria["id"]
-        existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
-        existingUsers = existingProject.get("users", [])
-        #gets list of users for project
-        existingUsers.append(criteria["username"])
-        #update the username list in the document
-        existingProject["users"] = existingUsers
-        self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+        projectJoined = False
+        projectID = criteria["projectID"]
+        doesProjectExist = self.checkExistingProject(criteria['projectID'])
+        _err = "Project with this ID does not exist"
+        if doesProjectExist == True:           
+            existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+            existingUsers = existingProject.get("users", [])
+            #gets list of users for project
+            existingUsers.append(criteria["username"])
+            #update the username list in the document
+            existingProject["users"] = existingUsers
+            self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+            projectJoined = True
+        return projectJoined, _err
     #method to change number of checkedout hardware sets for each project
     def updateHardwareSets(self, criteria : dict):
         #update checkedOutFields in Project
-        projectID = criteria["id"]
+        projectID = criteria["projectID"]
         HW1 = criteria["HardwarSet1"]
         HW2 = criteria["HardwareSet2"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
@@ -69,7 +74,7 @@ class ProjectHandler:
     def isUserInProject(self, criteria : dict):
         #check to see if user is in the project
         username = criteria["username"]
-        projectID = criteria["id"]
+        projectID = criteria["projectID"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
         listOfUsers = existingProject["users"]
         if username in listOfUsers:

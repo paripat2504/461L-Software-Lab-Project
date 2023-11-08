@@ -38,7 +38,7 @@ function AddProject() {
             const data = await response.json();
             //Handle message
             alert(data.message);
-            if(data.message == 'Project Created successfully'){
+            if(data.message === 'Project Created successfully'){
                 navigate('/home');
             }
           } catch (err) {                                      
