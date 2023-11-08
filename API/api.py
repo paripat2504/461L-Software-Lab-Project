@@ -97,7 +97,6 @@ def projectJoin():
     if userName and projectID:
         
         projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID, })
-        # Call the login function from the Database class
         
         if projJoined == True:
             return jsonify({'message': 'Project Joined successfully'})
@@ -106,6 +105,22 @@ def projectJoin():
             return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request'})
+    
+@app.route('/displayProjects', methods=['POST'])
+def displayProjects():
+    data = request.get_json()
+    userName = data.get('userName')
+    
+    if userName:
+        
+        projectsRetreived, _err = projHandler.returnUserProjects({"userName":userName})
+        if _err == None:
+            return jsonify({'message': 'Project Retreived successfully'})
+        
+        else:
+            return jsonify({'message': _err})
+    else:
+        return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
     
 # Run the Flask application
