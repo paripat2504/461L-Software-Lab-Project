@@ -20,6 +20,7 @@ class InitializeGlobals:
         self.__db = self.__client[self.__database_name]
         self.__users = self.__db.users
         self.__Projects = self.__db.Projects
+        self.__HWSet = self.__db.HWSet
     
     def getDatabase_name(self):
         return self.__database_name
@@ -38,3 +39,7 @@ class InitializeGlobals:
     
     def getProjects(self):
         return self.__Projects
+    
+    def getHWSets(self):
+        return self.__HWSet
+    
