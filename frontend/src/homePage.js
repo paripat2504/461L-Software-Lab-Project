@@ -3,53 +3,20 @@ import { useState } from 'react';
 import { useNavigate } from "react-router";
 import ProjectTable from './Projects';
 import Button from '@mui/material/Button';
+import { useAuth } from './UserContext';
 
 
 function HomePage(props) {
-  const navigate = useNavigate();
+  const { userId } = useAuth();
+  console.log(userId);
+  const fetchProjects = async () => {
 
-  const projects = [
-    {
-      id: 1,
-      name: 'Project 1',
-      user: 'abc',
-    },
-    {
-      id: 2,
-      name: 'Project 2',
-      user: 'def'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    },
-    {
-      id: 3,
-      name: 'Project 3',
-      user: 'ghi'
-    }
-  ];
+
+  }
+
+  const projects = [{name: 'test', user: 'test', id: 'test'}];
+
+  const navigate = useNavigate();
 
     return (
     <div>    
