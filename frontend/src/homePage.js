@@ -7,8 +7,21 @@ import { useAuth } from './UserContext';
 
 
 function HomePage(props) {
-  const { userId } = useAuth();
-  console.log(userId);
+  const { userId, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  if (userId === null) {
+    navigate('/');
+  }
+
+
+  const [proj, setProjects] = useState([]);
+
+  const handleLogout = () => {
+    logout()
+    navigate('/');
+  }
+
   const fetchProjects = async () => {
 
 
@@ -16,7 +29,6 @@ function HomePage(props) {
 
   const projects = [{name: 'test', user: 'test', id: 'test'}];
 
-  const navigate = useNavigate();
 
     return (
     <div>    
@@ -47,7 +59,9 @@ function HomePage(props) {
             <div className="flex justify-center">    
                 <div className="w-95 border-t-8 rounded-md border-amber-600 bg-white h-24 p-5 shadow-2xl">
                   <Button variant="contained" color="primary" href="/addProject">Add Project</Button>
+                  <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
                 </div>
+
             </div>
         </div>
     </div>
