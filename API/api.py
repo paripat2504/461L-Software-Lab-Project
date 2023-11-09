@@ -13,9 +13,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
+from HWSetHandler import HWSetHandler as hwH
 
-userHandler = uH(True)
-projHandler = projH(True)
+
+debugMode = True
+userHandler = uH(debugMode)
+projHandler = projH(debugMode)
+hwHandler = hwH(debugMode)
 
 # Create the Flask application
 app = Flask(__name__)
@@ -121,6 +125,21 @@ def displayProjects():
             return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
+    
+
+@app.route('/checkInHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
+def checkIntHWSet(projectID,hwSetID,amountRequested):
+    projH.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+    err = None
+    if err != None:
+        return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
+    else:
+        return jsonify({'message':''})
+
+@app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
+def checkOutHWSet(projectID,hwSetID,amountRequested):
+    projH.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+
     
     
 # Run the Flask application
