@@ -8,6 +8,10 @@ import DB_init
 import ast
 import HWSetHandler
 
+hwHandler = HWSetHandler.HWSetHandler(debugMode)
+hwHandler.initializeHWSet('Computers',140)
+hwHandler.initializeHWSet('Servers',100)
+
 class ProjectHandler:
     def __init__(self, debugMode : bool = True):
         self.__debugMode = debugMode
@@ -23,9 +27,7 @@ class ProjectHandler:
 
         self.__Projects = self.__mongo.getProjects()
         
-        hwHandler = HWSetHandler.HWSetHandler(debugMode)
-        hwHandler.initializeHWSet('Computers',140)
-        hwHandler.initializeHWSet('Servers',100)
+
         
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
@@ -45,8 +47,8 @@ class ProjectHandler:
                 "projectDescription": criteria["projectDescription"],
                 "projectID" : criteria['projectID'],
                 "users" : [criteria["userName"]],
-                "HardwareSet1CheckedOut" : 0,
-                "HardwareSet2CheckedOut" : 0
+                "Computers_CheckedOut" : 0,
+                "Servers_CheckedOut" : 0
             }
             self.__Projects.insert_one(projectDocument)
             projectAdded = True
@@ -69,8 +71,8 @@ class ProjectHandler:
         HW1 = criteria["HardwarSet1"]
         HW2 = criteria["HardwareSet2"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
-        existingProject["HardwareSet1CheckedOut"] = HW1
-        existingProject["HardwareSet2CheckedOut"] = HW2
+        existingProject["Computers"] = HW1
+        existingProject["Servers"] = HW2
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
     def isUserInProject(self, criteria : dict):
         #check to see if user is in the project
