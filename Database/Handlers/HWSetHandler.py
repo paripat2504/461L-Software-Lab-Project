@@ -34,16 +34,13 @@ class HWSetHandler:
     
     def getHWSetAvailability(self, criteria : dict):
          x, _err = self.findHWSet(criteria['hwSetID'])
-         y = 43
          return x['availability']
 
     def getHWSetQty(self, criteria : dict):
          x, _err = self.findHWSet(criteria['hwSetID'])
-         y = 43
          return x['qty']
     
     def setHWSetAvailability(self, criteria : dict):
-        x = 4
         self.__HWSet.update_one({'hwSetID':criteria['hwSetID']},{"$set" : {'availability':criteria['amtToSet']}})
     
 
@@ -61,22 +58,32 @@ class HWSetHandler:
 
     def checkOutHWSet(self,criteria : dict):
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+        newHWSetVal = 0
 
         if int(criteria['amountRequested']) > availableHWSet:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':0})
+            newHWSetVal = availableHWSet
         else:
             availableHWSet -= int(criteria['amountRequested'])
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            newHWSetVal = int(criteria['amountRequested'])
+
+        return newHWSetVal
 
     def checkInHWSet(self,criteria : dict):
         HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
-
-        if int(criteria['amountRequested']) + availableHWSet > HWSetqty:
+        newHWSetVal = 0
+        comparator = int(criteria['amountRequested']) + availableHWSet
+        if comparator > HWSetqty:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
+            newHWSetVal = 0
         else:
-            HWSetqty += int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
+            availableHWSet += int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            newHWSetVal = int(criteria['amountRequested'])
+        
+        return newHWSetVal
         
         
 

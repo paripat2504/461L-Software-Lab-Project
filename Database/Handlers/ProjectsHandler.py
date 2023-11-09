@@ -23,9 +23,9 @@ class ProjectHandler:
 
         self.__Projects = self.__mongo.getProjects()
         
-        hwHandler = HWSetHandler.HWSetHandler(debugMode)
-        hwHandler.initializeHWSet('Computers',140)
-        hwHandler.initializeHWSet('Servers',100)
+        self.__hwHandler = HWSetHandler.HWSetHandler(debugMode)
+        self.__hwHandler.initializeHWSet('Computers',140)
+        self.__hwHandler.initializeHWSet('Servers',100)
         
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
@@ -62,16 +62,7 @@ class ProjectHandler:
         #update the username list in the document
         existingProject["users"] = existingUsers
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
-    #method to change number of checkedout hardware sets for each project
-    # def updateHardwareSets(self, criteria : dict):
-    #     #update checkedOutFields in Project
-    #     projectID = criteria["projectID"]
-    #     HW1 = criteria["Servers"]
-    #     HW2 = criteria["Computers"]
-    #     existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
-    #     existingProject["Computers"] = HW1
-    #     existingProject["Servers"] = HW2
-    #     self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+
 
 
     def isUserInProject(self, criteria : dict):
@@ -117,7 +108,31 @@ class ProjectHandler:
         _err = "Project or User is not found"
         return False, _err  # Project or user not found
 
+    def checkOutHardwareSet(self, criteria : dict):
+        
+        newHWSet_Val = self.__hwHandler.checkOutHWSet(criteria)
+        x = self.__Projects.find_one({'projectID':criteria['projectID']})
+        setToUpdate = None
+
+        if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
+        else: setToUpdate = 'Servers_CheckedOut'
+
+        updatedHWSet = x[setToUpdate] + newHWSet_Val
+        self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
+        
+
+
+    def checkInHardwareSet(self, criteria : dict):
+        
+        newHWSet_Val = self.__hwHandler.checkInHWSet(criteria)
+        x = self.__Projects.find_one({'projectID':criteria['projectID']})
+        setToUpdate = None
+
+        if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
+        else: setToUpdate = 'Servers_CheckedOut'
+
+        updatedHWSet = x[setToUpdate] - newHWSet_Val
+        self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
         
         
         
-# ProjectHandler(True)
