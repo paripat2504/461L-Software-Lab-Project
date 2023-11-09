@@ -1,3 +1,4 @@
+from re import T
 import sys
 import os
 
@@ -9,6 +10,7 @@ import DB_init
 class HWSetHandler:
     def __init__(self, debugMode : bool = True):
         x =4
+        self.__debugMode = debugMode
         self.__mongo = DB_init.InitializeGlobals(debugMode)
         self.__mongo_url = self.__mongo.getMongoURI()  # Default MongoDB connection URL
         self.__database_name = self.__mongo.getDatabase_name  # Replace with your desired database name
@@ -30,6 +32,20 @@ class HWSetHandler:
 
         return returnVal, doesHWSetExist
     
+    def getHWSetAvailability(self, criteria : dict):
+         x, _err = self.findHWSet(criteria['hwSetID'])
+         y = 43
+         return x['availability']
+
+    def getHWSetQty(self, criteria : dict):
+         x, _err = self.findHWSet(criteria['hwSetID'])
+         y = 43
+         return x['qty']
+    
+    def setHWSetAvailability(self, criteria : dict):
+        x = 4
+        self.__HWSet.update_one({'hwSetID':criteria['hwSetID']},{"$set" : {'availability':criteria['amtToSet']}})
+    
 
     def initializeHWSet(self,hwSetID: str,availability: int):
         val , exists = self.findHWSet(hwSetID)
@@ -43,7 +59,28 @@ class HWSetHandler:
             
 
 
-    def checkInHardware(self, projID : str, qty : int):
-        x = 5
-        self.findHWSet(projID)
+    def checkOutHWSet(self,criteria : dict):
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
 
+        if int(criteria['amountRequested']) > availableHWSet:
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':0})
+        else:
+            availableHWSet -= int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+
+    def checkInHWSet(self,criteria : dict):
+        HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+
+        if int(criteria['amountRequested']) + availableHWSet > HWSetqty:
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
+        else:
+            HWSetqty += int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
+        
+        
+
+# h = HWSetHandler(True)
+# x = h.checkOutHWSet({'hwSetID':'Servers','amountRequested':20})
+# x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
+# y = 4

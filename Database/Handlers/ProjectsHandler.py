@@ -8,10 +8,6 @@ import DB_init
 import ast
 import HWSetHandler
 
-hwHandler = HWSetHandler.HWSetHandler(debugMode)
-hwHandler.initializeHWSet('Computers',140)
-hwHandler.initializeHWSet('Servers',100)
-
 class ProjectHandler:
     def __init__(self, debugMode : bool = True):
         self.__debugMode = debugMode
@@ -27,7 +23,9 @@ class ProjectHandler:
 
         self.__Projects = self.__mongo.getProjects()
         
-
+        hwHandler = HWSetHandler.HWSetHandler(debugMode)
+        hwHandler.initializeHWSet('Computers',140)
+        hwHandler.initializeHWSet('Servers',100)
         
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
@@ -65,15 +63,17 @@ class ProjectHandler:
         existingProject["users"] = existingUsers
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
     #method to change number of checkedout hardware sets for each project
-    def updateHardwareSets(self, criteria : dict):
-        #update checkedOutFields in Project
-        projectID = criteria["id"]
-        HW1 = criteria["HardwarSet1"]
-        HW2 = criteria["HardwareSet2"]
-        existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
-        existingProject["Computers"] = HW1
-        existingProject["Servers"] = HW2
-        self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+    # def updateHardwareSets(self, criteria : dict):
+    #     #update checkedOutFields in Project
+    #     projectID = criteria["projectID"]
+    #     HW1 = criteria["Servers"]
+    #     HW2 = criteria["Computers"]
+    #     existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+    #     existingProject["Computers"] = HW1
+    #     existingProject["Servers"] = HW2
+    #     self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+
+
     def isUserInProject(self, criteria : dict):
         #check to see if user is in the project
         username = criteria["username"]
@@ -120,3 +120,4 @@ class ProjectHandler:
         
         
         
+# ProjectHandler(True)
