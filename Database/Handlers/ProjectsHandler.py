@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import bcrypt
 import DB_init
 import ast
+import HWSetHandler
 
 class ProjectHandler:
     def __init__(self, debugMode : bool = True):
@@ -21,6 +22,11 @@ class ProjectHandler:
         self.__db = self.__mongo.getDatabase()
 
         self.__Projects = self.__mongo.getProjects()
+        
+        hwHandler = HWSetHandler.HWSetHandler(debugMode)
+        hwHandler.initializeHWSet('Computers',140)
+        hwHandler.initializeHWSet('Servers',100)
+        
     def checkExistingProject(self, projectID):
         #check to see if there is a project with the same id already
         doesProjectExist = False
@@ -109,7 +115,6 @@ class ProjectHandler:
         _err = "Project or User is not found"
         return False, _err  # Project or user not found
 
-        
         
         
         
