@@ -4,18 +4,19 @@ import { useNavigate } from "react-router";
 import ProjectTable from './Projects';
 import Button from '@mui/material/Button';
 import { useAuth } from './UserContext';
+import { Navigate } from 'react-router-dom';
 
 
 function HomePage(props) {
   const { userId, logout } = useAuth();
   const navigate = useNavigate();
-  
   if (userId === null) {
-    navigate('/');
+    //Navigate to login page
+    return <Navigate to='/' />;
   }
 
 
-  const [proj, setProjects] = useState([]);
+  //const [proj, setProjects] = useState([]);
 
   const handleLogout = () => {
     logout()
