@@ -34,11 +34,11 @@ class HWSetHandler:
     
     def getHWSetAvailability(self, criteria : dict):
          x, _err = self.findHWSet(criteria['hwSetID'])
-         return x['availability']
+         return x['availability'], _err
 
     def getHWSetQty(self, criteria : dict):
          x, _err = self.findHWSet(criteria['hwSetID'])
-         return x['qty']
+         return x['qty'], _err
     
     def setHWSetAvailability(self, criteria : dict):
         self.__HWSet.update_one({'hwSetID':criteria['hwSetID']},{"$set" : {'availability':criteria['amtToSet']}})
