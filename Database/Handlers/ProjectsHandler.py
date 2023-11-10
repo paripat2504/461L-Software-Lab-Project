@@ -54,7 +54,7 @@ class ProjectHandler:
     def joinProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
 
-        projectID = criteria["id"]
+        projectID = criteria["projectID"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
         existingUsers = existingProject.get("users", [])
         #gets list of users for project

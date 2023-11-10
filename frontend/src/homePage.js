@@ -5,16 +5,18 @@ import Button from '@mui/material/Button';
 import { useAuth } from './UserContext';
 import { Navigate } from 'react-router-dom';
 import {useState, useEffect } from 'react';
-
-
+import JoinProject from './JoinProject';
 import AddProject from './AddProject';
 
 function HomePage(props) {
   const { userId, userName, logout } = useAuth();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const openAddModal = () => setIsAddModalOpen(true);
+  const closeAddModal = () => setIsAddModalOpen(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const openJoinModal = () => setIsJoinModalOpen(true);
+  const closeJoinModal = () => setIsJoinModalOpen(false);
   const [proj, setProjects] = useState([]);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ function HomePage(props) {
         alert("An error occured: " + err)
       };
     }
-    
+  
     const cachedProjects = localStorage.getItem('projectsData');
 
     if (cachedProjects) {
@@ -56,7 +58,6 @@ function HomePage(props) {
     return <Navigate to='/' />;
   }
 
-  console.log(proj)
 
   const handleLogout = () => {
     logout()
@@ -98,8 +99,12 @@ function HomePage(props) {
             <div className="flex justify-center">    
                 <div className="w-95 border-t-8 rounded-md border-amber-600 bg-white h-24 p-5 shadow-2xl">
                   <div>
-                    <Button variant="contained" color="primary" onClick={openModal}>Add Project</Button>
-                    <AddProject isOpen={isModalOpen} onRequestClose={closeModal}/>
+                    <Button variant="contained" color="primary" onClick={openAddModal}>Add Project</Button>
+                    <AddProject isOpen={isAddModalOpen} onRequestClose={closeAddModal}/>
+                  </div>
+                  <div>
+                    <Button variant="contained" color="primary" onClick={openJoinModal}>Join Project</Button>
+                    <JoinProject isOpen={isJoinModalOpen} onRequestClose={closeJoinModal}/>
                   </div>
                   <Button variant="contained" color="primary" onClick={handleLogout}>Sign Out</Button>
                 </div>
