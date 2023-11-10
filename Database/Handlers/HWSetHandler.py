@@ -75,7 +75,7 @@ class HWSetHandler:
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
         newHWSetVal = 0
         comparator = int(criteria['amountRequested']) + availableHWSet
-        if comparator > HWSetqty:
+        if comparator > availableHWSet:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
             newHWSetVal = 0
         else:

@@ -13,17 +13,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
-from HWSetHandler import HWSetHandler as hwH
-
 
 debugMode = True
 userHandler = uH(debugMode)
 projHandler = projH(debugMode)
-hwHandler = hwH(debugMode)
+
 
 # Create the Flask application
 app = Flask(__name__)
 CORS(app)
+
 
 # Create an instance of the Database class
 
@@ -91,8 +90,6 @@ def project():
     else:
         return jsonify({'message': 'Invalid request'})
     
-<<<<<<< HEAD
-=======
 # Define project endpoint and logic for joiningProject
 @app.route('/projectJoin', methods=['POST'])
 def projectJoin():
@@ -131,7 +128,7 @@ def displayProjects():
 
 @app.route('/checkInHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
 def checkIntHWSet(projectID,hwSetID,amountRequested):
-    projH.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+    projHandler.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
     err = None
     if err != None:
         return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
@@ -140,11 +137,12 @@ def checkIntHWSet(projectID,hwSetID,amountRequested):
 
 @app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
 def checkOutHWSet(projectID,hwSetID,amountRequested):
-    projH.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+    projHandler.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
 
-    
->>>>>>> f4dab60665298b788d1f02e7591730ad83bc5cb3
+    return jsonify({'message':''})
     
 # Run the Flask application
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    app.run()
+
