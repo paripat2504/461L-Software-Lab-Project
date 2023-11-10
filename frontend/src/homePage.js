@@ -41,7 +41,7 @@ function HomePage(props) {
     
       const data = await response.json();
 
-      if (data.message === "Project Retreived successfully") {
+      if (data.message === "Project Retrieved successfully") {
         setProjects(data.projects)
       }
 

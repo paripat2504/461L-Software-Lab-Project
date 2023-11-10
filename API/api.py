@@ -115,9 +115,9 @@ def displayProjects():
     
     if userName:
         
-        projectsRetreived, _err = projHandler.returnUserProjects({"userName":userName})
+        projectsRetreived, _err = projHandler.returnUserProjects(userName)
         if _err == None:
-            return jsonify({'message': 'Project Retreived successfully', 'projects': projectsRetreived})
+            return jsonify({'message': 'Project Retrieved successfully', 'projects': projectsRetreived})
         else:
             return jsonify({'message': _err})
     else:
