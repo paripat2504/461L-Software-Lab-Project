@@ -37,9 +37,11 @@ def login():
         
         validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
-        
+
         if validLogin == True:
-            return jsonify({'message': 'Login successful'})
+            uDict, err = userHandler.findUser({'userID':userID} ,{'userName':1})
+            retrievedUName = uDict['userName']
+            return jsonify({'message': 'Login successful', 'userName' : retrievedUName})
         
         else:
             return jsonify({'message': _err})
@@ -113,7 +115,7 @@ def projectJoin():
 def displayProjects():
     data = request.get_json()
     userName = data.get('userName')
-    
+     
     if userName:
         
         projectsRetreived, _err = projHandler.returnUserProjects({"userName":userName})
@@ -133,7 +135,7 @@ def checkIntHWSet(projectID,hwSetID,amountRequested):
     if err != None:
         return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
     else:
-        return jsonify({'message':''})
+        return jsonify({'message':err})
 
 @app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
 def checkOutHWSet(projectID,hwSetID,amountRequested):
