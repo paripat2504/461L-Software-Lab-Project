@@ -15,29 +15,23 @@ function Project({project}) {
         setQty('');
     };
     return (
-        <tr>
+        <div className="bg-slate-100 justify-center rounded-xl p-4 dark:bg-slate-800">
             <td>{project.name}</td>
             <td>{project.user}</td>
             <td><TextField id="filled-basic" label="QTY" variant="filled" value={qty} onChange={(e) => setQty(e.target.value)}/></td>
             <td className="px-5">
                 <Button variant="contained" onClick={() => handleCheckInOut(qty)} >Check in</Button>
-                <div/>
+                <div className='py-2'/>
                 <Button variant="contained" onClick={() => handleCheckInOut(-qty)}>Check out</Button>
             </td>
             <td>HW Used: {hwUsed}</td>
-        </tr>
+        </div>
     );
 }
 
 function ProjectTable( {projects} ) {
     return (
     <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Owner</th>
-        </tr>
-      </thead>
       <tbody>
         {projects.map((project) => (
           <Project key={project.id} project={project} />

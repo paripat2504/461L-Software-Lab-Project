@@ -4,6 +4,7 @@ import ProjectTable from './Projects';
 import Button from '@mui/material/Button';
 import { useAuth } from './UserContext';
 import { Navigate } from 'react-router-dom';
+import {useState, useEffect } from 'react';
 
 
 import AddProject from './AddProject';
@@ -11,51 +12,58 @@ import AddProject from './AddProject';
 function HomePage(props) {
   const { userId, userName, logout } = useAuth();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const [proj, setProjects] = React.useState([]);
-  console.log(userName)
+  const [proj, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/displayProjects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userName: userName })
+        });
+      
+        const data = await response.json();
+
+        if (data.message === "Project Retrieved successfully") {
+          localStorage.setItem('projectsData', JSON.stringify(data.projects));
+          setProjects(data.projects)
+        }
+
+      } catch (err) {
+        console.error(err);
+        alert("An error occured: " + err)
+      };
+
+    }
+    
+    const cachedProjects = localStorage.getItem('projectsData');
+
+    if (cachedProjects) {
+      // If cached data exists, use it and avoid making a new fetch request
+      setProjects(JSON.parse(cachedProjects));
+    } else if (userName) {
+        fetchProjects();
+    };
+  }, [userName]);
 
   if (userId === null) {
     //Navigate to login page
     return <Navigate to='/' />;
   }
 
-
-
   const handleLogout = () => {
     logout()
     navigate('/');
   }
 
-  const fetchProjects = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/displayProjects', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userName: userName })
-      });
-    
-      const data = await response.json();
-
-      if (data.message === "Project Retrieved successfully") {
-        setProjects(data.projects)
-      }
-
-    } catch (err) {
-
-    };
-
-  }
-
-  fetchProjects();
-
-  console.log(proj)
-
-  const projects = [{name: 'test', user: 'test', id: 'test'}];
+  const projects = [{Computers_CheckedOut:0, Servers_CheckedOut:0, 
+                  Project_Name:'Project 1', Project_Description:'Project 1 Description', Project_ID:'1'}];
 
 
     return (
