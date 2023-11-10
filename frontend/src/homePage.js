@@ -39,7 +39,6 @@ function HomePage(props) {
         console.error(err);
         alert("An error occured: " + err)
       };
-
     }
     
     const cachedProjects = localStorage.getItem('projectsData');
@@ -57,14 +56,18 @@ function HomePage(props) {
     return <Navigate to='/' />;
   }
 
+  console.log(proj)
+
   const handleLogout = () => {
     logout()
+    localStorage.removeItem('projectsData');
     navigate('/');
   }
 
-  const projects = [{Computers_CheckedOut:0, Servers_CheckedOut:0, 
-                  Project_Name:'Project 1', Project_Description:'Project 1 Description', Project_ID:'1'}];
-
+  // const projects = [{Computers_CheckedOut:0, Servers_CheckedOut:0, Project_Name:'Project 1', Project_Description:'This is a longer description of the project and I want to achieve very much with this project that I am enjoying a lot', id:'1'}];
+  
+  const projects = proj;
+  console.log(projects)
 
     return (
     <div>    
@@ -98,7 +101,7 @@ function HomePage(props) {
                     <Button variant="contained" color="primary" onClick={openModal}>Add Project</Button>
                     <AddProject isOpen={isModalOpen} onRequestClose={closeModal}/>
                   </div>
-                  <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
+                  <Button variant="contained" color="primary" onClick={handleLogout}>Sign Out</Button>
                 </div>
             </div>
         </div>
