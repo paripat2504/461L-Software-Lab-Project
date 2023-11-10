@@ -134,5 +134,4 @@ class ProjectHandler:
         updatedHWSet = x[setToUpdate] - newHWSet_Val
         self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
         
-        
-        
+
