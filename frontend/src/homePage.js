@@ -8,7 +8,7 @@ import {useState, useEffect } from 'react';
 import JoinProject from './JoinProject';
 import AddProject from './AddProject';
 
-function HomePage(props) {
+function HomePage() {
   const { userId, userName, logout } = useAuth();
   const navigate = useNavigate();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -41,12 +41,30 @@ function HomePage(props) {
       console.error(err);
       alert("An error occured: " + err)
     };
-  }
+  };
 
+  const fetchResources = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/displayHardware', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      if (data.message === "Sucessfully Gathered Avaiabilities and Capacities") {
+        localStorage.setItem('hardwareData', JSON.stringify(data.hw_dict));
+        setResources(data)
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occured: " + err)
+    };
+  };
+
+  // USE EFFECT FOR PROJECTS
   useEffect(() => {
-
     const cachedProjects = localStorage.getItem('projectsData');
-
     if (cachedProjects) {
       // If cached data exists, use it and avoid making a new fetch request
       setProjects(JSON.parse(cachedProjects));
@@ -55,40 +73,16 @@ function HomePage(props) {
     };
   }, [userName]);
 
+  // USE EFFECT FOR HARDWARE RESOURCES
   useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/displayHardware', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const data = await response.json();
-
-        if (data.message === "Sucessfully Gathered Avaiabilities and Capacities") {
-          
-          console.log(data)
-          localStorage.setItem('hardwareData', data);
-          setResources(data)
-        }
-      } catch (err) {
-        console.error(err);
-        alert("An error occured: " + err)
-      };
-    }
-
     const cachedResources = localStorage.getItem('hardwareData');
-
     if (cachedResources) {
-      setResources(cachedResources);
+      setResources(JSON.parse(cachedResources));
     } else {
       fetchResources();
     };
   }, []);
 
-  console.log(resources)
 
   if (userId === null) {
     //Navigate to login page

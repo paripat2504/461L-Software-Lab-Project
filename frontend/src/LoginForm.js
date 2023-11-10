@@ -5,10 +5,15 @@ import { useAuth } from './UserContext';
 function LoginForm() {
     const { login } = useAuth();
     const navigate = useNavigate();
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+
+    //Make sure localstorage is clear
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('projectsData');
+    localStorage.removeItem('hardwareData');
   
     const handleUsername = (e) => {
       setUsername(e.target.value); 
