@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { useNavigate } from "react-router";
 import ProjectTable from './Projects';
 import Button from '@mui/material/Button';
@@ -7,9 +6,17 @@ import { useAuth } from './UserContext';
 import { Navigate } from 'react-router-dom';
 
 
+import AddProject from './AddProject';
+
 function HomePage(props) {
   const { userId, logout } = useAuth();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+
   if (userId === null) {
     //Navigate to login page
     return <Navigate to='/' />;
@@ -58,10 +65,12 @@ function HomePage(props) {
         <div className="container mx-auto pt-10">
             <div className="flex justify-center">    
                 <div className="w-95 border-t-8 rounded-md border-amber-600 bg-white h-24 p-5 shadow-2xl">
-                  <Button variant="contained" color="primary" href="/addProject">Add Project</Button>
+                  <div>
+                    <Button variant="contained" color="primary" onClick={openModal}>Add Project</Button>
+                    <AddProject isOpen={isModalOpen} onRequestClose={closeModal}/>
+                  </div>
                   <Button variant="contained" color="primary" onClick={handleLogout}>Logout</Button>
                 </div>
-
             </div>
         </div>
     </div>
