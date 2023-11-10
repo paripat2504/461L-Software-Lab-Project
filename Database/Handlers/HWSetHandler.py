@@ -1,67 +1,93 @@
+from re import T
 import sys
 import os
 
-from flask import jsonify
-from ProjectsHandler import ProjectHandler
-
-ProjHandler = ProjectHandler()
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import bcrypt
-# import DB_init
-import ast
+import DB_init
 
 
+class HWSetHandler:
+    def __init__(self, debugMode : bool = True):
+        x =4
+        self.__debugMode = debugMode
+        self.__mongo = DB_init.InitializeGlobals(debugMode)
+        self.__mongo_url = self.__mongo.getMongoURI()  # Default MongoDB connection URL
+        self.__database_name = self.__mongo.getDatabase_name  # Replace with your desired database name
+
+        # Initialize the MongoDB client
+        self.__client = self.__mongo.getClient()
+
+        # Create or access the database
+        self.__db = self.__mongo.getDatabase()
+
+        self.__HWSet = self.__mongo.getHWSets()
+
+    def findHWSet(self, hwSetID : str):
+        doesHWSetExist = False
+        returnVal = self.__HWSet.find_one({'hwSetID' : hwSetID},{'_id':0})
+        if returnVal != None:
+            doesHWSetExist = True
 
 
+        return returnVal, doesHWSetExist
+    
+    def getHWSetAvailability(self, criteria : dict):
+         x, _err = self.findHWSet(criteria['hwSetID'])
+         return x['availability']
 
-# class HWSetHandler:
+    def getHWSetQty(self, criteria : dict):
+         x, _err = self.findHWSet(criteria['hwSetID'])
+         return x['qty']
+    
+    def setHWSetAvailability(self, criteria : dict):
+        self.__HWSet.update_one({'hwSetID':criteria['hwSetID']},{"$set" : {'availability':criteria['amtToSet']}})
+    
+
+    def initializeHWSet(self,hwSetID: str,availability: int):
+        val , exists = self.findHWSet(hwSetID)
+        _err = None
+        if(exists == False):
+            self.__HWSet.insert_one({'hwSetID' : hwSetID, 'availability' : availability, 'qty' : availability})
+        else:
+            _err = 'Hardware Set with this ID already exists'
+
+        return _err
+            
 
 
-#     def __init__(self, debugMode : bool = True):
-#         x =4
-#         # self.__mongo = DB_init.InitializeGlobals(self.__debugMode)
-#         # self.__mongo_url = self.__mongo.getMongoURI()  # Default MongoDB connection URL
-#         # self.__database_name = self.__mongo.getDatabase_name  # Replace with your desired database name
+    def checkOutHWSet(self,criteria : dict):
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+        newHWSetVal = 0
 
-#         # # Initialize the MongoDB client
-#         # self.__client = self.__mongo.getClient()
+        if int(criteria['amountRequested']) > availableHWSet:
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':0})
+            newHWSetVal = availableHWSet
+        else:
+            availableHWSet -= int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            newHWSetVal = int(criteria['amountRequested'])
 
-#         # # Create or access the database
-#         # self.__db = self.__mongo.getDatabase()
+        return newHWSetVal
 
-#         # self.__HWSet = self.__mongo.getProjects()
-
-#     # def findHWSet(self, name):
-#     #     _err :str
-#     #     if self.__HWSet.find_one({'name' : name},{'_id':0})[1] == False:
-#     #         _err = 'HW Set Not Found'
-#     #         return None, _err
+    def checkInHWSet(self,criteria : dict):
+        HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+        newHWSetVal = 0
+        comparator = int(criteria['amountRequested']) + availableHWSet
+        if comparator > availableHWSet:
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
+            newHWSetVal = 0
+        else:
+            availableHWSet += int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            newHWSetVal = int(criteria['amountRequested'])
         
-#     #     else:
-#     #         returnVal = self.__HWSet.find_one({'name' : name},{'_id':0})
-#     #         return returnVal, None    
-
-#     # def addHWSet(self,name: str,availability: int):
+        return newHWSetVal
         
-#     #     self.__HWSet.insert_one({'name' : name, 'availability' : availability, 'qty' : availability})
-
-
-
-#     # def checkInHardware(self, projID : str, qty : int):
-#     #     x = 5
-#     #     self.__availability += qty
-
         
 
-
-
-        
-
-
-
-
-#     # def checkOutHardware(self, projID : str, qty : int):
-#     #     x=2
-
+# h = HWSetHandler(True)
+# x = h.checkOutHWSet({'hwSetID':'Servers','amountRequested':20})
+# x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
+# y = 4
