@@ -25,7 +25,6 @@ function HomePage(props) {
 
   const fetchProjects = async () => {
 
-
   }
 
   const projects = [{name: 'test', user: 'test', id: 'test'}];

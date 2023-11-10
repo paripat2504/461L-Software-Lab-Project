@@ -49,7 +49,7 @@ function SignUpForm() {
       const data = await response.json();
       console.log(data.message);
 
-      if (data.message === "User registered successfully") {
+      if (data.message === "User successfully created") {
           alert("User registered successfully")
           navigate('/');
       } else if (data.message === "Username has already been taken") {
