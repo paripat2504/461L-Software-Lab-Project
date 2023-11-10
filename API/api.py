@@ -14,15 +14,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
 
-debugMode = True
-userHandler = uH(debugMode)
-projHandler = projH(debugMode)
-
+userHandler = uH(True)
+projHandler = projH(True)
 
 # Create the Flask application
 app = Flask(__name__)
 CORS(app)
-
 
 # Create an instance of the Database class
 
@@ -34,14 +31,12 @@ def login():
     password = data.get('password')
     
     if userID and password:
-        
+        #include username, get username from database
         validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
-
+        
         if validLogin == True:
-            uDict, err = userHandler.findUser({'userID':userID} ,{'userName':1})
-            retrievedUName = uDict['userName']
-            return jsonify({'message': 'Login successful', 'userName' : retrievedUName})
+            return jsonify({'message': 'Login successful'})
         
         else:
             return jsonify({'message': _err})
@@ -115,7 +110,7 @@ def projectJoin():
 def displayProjects():
     data = request.get_json()
     userName = data.get('userName')
-     
+    
     if userName:
         
         projectsRetreived, _err = projHandler.returnUserProjects({"userName":userName})
