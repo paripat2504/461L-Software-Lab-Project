@@ -65,7 +65,7 @@ def signup():
         return jsonify({'message': 'Invalid request'})
 
 
-    
+
     
 # Define project endpoint and logic
 @app.route('/project', methods=['POST'])

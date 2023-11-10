@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import {useState, useEffect } from 'react';
 import JoinProject from './JoinProject';
 import AddProject from './AddProject';
+import ResourceTable from './Resources';
 
 function HomePage() {
   const { userId, userName, logout } = useAuth();
@@ -107,9 +108,7 @@ function HomePage() {
             <p className="flex justify-center font-bold text-3xl">Resources</p>
             <div className="border-t-4 rounded-full border-slate-100 my-3 mb-5"/>
             <div className="overflow-y-auto h-4/5">
-                <p className="text-base">
-                    Resources work in progress. 
-                </p>
+              <ResourceTable resources={resources}></ResourceTable>
             </div>
           </div>
   
