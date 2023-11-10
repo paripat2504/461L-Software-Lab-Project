@@ -30,14 +30,18 @@ function Project({project}) {
     );
 }
 
-function ProjectTable( {projects} ) {
-    return (
+function ProjectTable({ projects }) {
+  return (
     <div>
-        {projects.map((project) => (
+      {projects.length === 0 ? (
+        <p className="text-base justify-center flex font-bold">No projects to display. Join or create one!</p>
+      ) : (
+        projects.map((project) => (
           <Project key={project.projectID} project={project} />
-        ))}
+        ))
+      )}
     </div>
-    )
+  );
 }
 
 
