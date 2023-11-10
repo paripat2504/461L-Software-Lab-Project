@@ -138,7 +138,14 @@ def checkOutHWSet(projectID,hwSetID,amountRequested):
     projHandler.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
 
     return jsonify({'message':''})
-    
+
+@app.route('/displayHardware', methods=['POST'])
+def displayHardware():
+    HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity, _err = projHandler.displayHardware()
+    if _err == True:
+        return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'HWSet1Availability' : HWSet1Availability, 'HWSet2Availability' : HWSet2Availability, 'HWSet1Capacity' : HWSet1Capacity, 'HWSet2Capacity' : HWSet2Capacity})
+    else:
+        return jsonify({'message' : "HWSet info couldnt be retrieved"})
 # Run the Flask application
 if __name__ == '__main__':
 
