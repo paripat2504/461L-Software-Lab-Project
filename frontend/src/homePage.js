@@ -9,13 +9,11 @@ import { Navigate } from 'react-router-dom';
 import AddProject from './AddProject';
 
 function HomePage(props) {
-  const { userId, logout } = useAuth();
+  const { userId, userName, logout } = useAuth();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
 
   if (userId === null) {
     //Navigate to login page

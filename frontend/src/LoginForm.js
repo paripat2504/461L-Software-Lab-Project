@@ -36,7 +36,7 @@ function LoginForm() {
           const data = await response.json();
           //Handle message
           if (data.message === "Login successful") {
-            login(username);
+            login(username, data.userName);
             navigate('/home');
           } else {
             setMessage(data.message);

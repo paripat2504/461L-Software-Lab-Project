@@ -36,7 +36,9 @@ def login():
         # Call the login function from the Database class
         
         if validLogin == True:
-            return jsonify({'message': 'Login successful'})
+            uDict, err = userHandler.findUser({'userID':userID} ,{'userName':1})
+            retrievedUName = uDict['userName']
+            return jsonify({'message': 'Login successful', 'userName' : retrievedUName})
         
         else:
             return jsonify({'message': _err})
@@ -115,8 +117,7 @@ def displayProjects():
         
         projectsRetreived, _err = projHandler.returnUserProjects({"userName":userName})
         if _err == None:
-            return jsonify({'message': 'Project Retreived successfully'})
-        
+            return jsonify({'message': 'Project Retreived successfully', 'projects': projectsRetreived})
         else:
             return jsonify({'message': _err})
     else:
