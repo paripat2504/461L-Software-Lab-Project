@@ -2,15 +2,15 @@ import React from 'react';
 import { useState } from 'react'; 
 import { useNavigate } from "react-router";
 import Modal from 'react-modal';
+import { useAuth } from './UserContext';
 
 function AddProject({isOpen, onRequestClose}) {
     const navigate = useNavigate();
+    const { userName } = useAuth();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [id, setID] = useState('');
     const [message, setMessage] = useState('');
-
-    const tempID = 'testtest';
 
     const handleName = (e) => {
         setName(e.target.value)
@@ -33,7 +33,7 @@ function AddProject({isOpen, onRequestClose}) {
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ userName:tempID, projectName:name, projectDescription:description, projectID:id })
+              body: JSON.stringify({ userName:userName, projectName:name, projectDescription:description, projectID:id })
             });
           
             const data = await response.json();
@@ -41,6 +41,9 @@ function AddProject({isOpen, onRequestClose}) {
             alert(data.message);
             if(data.message === 'Project Created successfully'){
                 onRequestClose();
+                setName('');
+                setDescription('');
+                setID('');
             }
           } catch (err) {                                      
             console.error(err);
@@ -64,6 +67,7 @@ function AddProject({isOpen, onRequestClose}) {
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             className="justify-center overflow-x-hidden overflow-y-auto fixed items-center flex inset-0 z-50 outline-none focus:outline-none bg-gray-600 bg-opacity-75"
+            ariaHideApp={false}
         >   
             <div className="border-t-8 rounded-md border-amber-600 bg-white p-14 shadow-2xl w-96 border-0 rounded-lg shadow-lg relative flex flex-col outline-none focus:outline-none">
             <button

@@ -14,6 +14,8 @@ function HomePage(props) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const [proj, setProjects] = React.useState([]);
+  console.log(userName)
 
   if (userId === null) {
     //Navigate to login page
@@ -21,7 +23,6 @@ function HomePage(props) {
   }
 
 
-  //const [proj, setProjects] = useState([]);
 
   const handleLogout = () => {
     logout()
@@ -29,8 +30,30 @@ function HomePage(props) {
   }
 
   const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/displayProjects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userName: userName })
+      });
+    
+      const data = await response.json();
+
+      if (data.message === "Project Retreived successfully") {
+        setProjects(data.projects)
+      }
+
+    } catch (err) {
+
+    };
 
   }
+
+  fetchProjects();
+
+  console.log(proj)
 
   const projects = [{name: 'test', user: 'test', id: 'test'}];
 
