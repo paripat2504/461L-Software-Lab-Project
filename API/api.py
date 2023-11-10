@@ -98,7 +98,7 @@ def projectJoin():
     
     if userName and projectID:
         
-        projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID, })
+        projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID})
         
         if projJoined == True:
             return jsonify({'message': 'Project Joined successfully'})

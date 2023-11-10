@@ -54,15 +54,25 @@ class ProjectHandler:
     def joinProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
 
-        projectID = criteria["id"]
+        _err = None
+        projectJoined = False
+        projectID = criteria["projectID"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+        if existingProject == None:
+            return projectJoined, "Project does not exist"
         existingUsers = existingProject.get("users", [])
         #gets list of users for project
-        existingUsers.append(criteria["username"])
+        existingUsers.append(criteria["userName"])
         #update the username list in the document
         existingProject["users"] = existingUsers
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
 
+        newProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+        newUsers = newProject.get("users", [])
+        if criteria["userName"] in newUsers:
+            projectJoined = True
+            return projectJoined, _err
+        return projectJoined, "User was not added to project"
 
 
     def isUserInProject(self, criteria : dict):
