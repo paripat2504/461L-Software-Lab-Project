@@ -61,6 +61,8 @@ class ProjectHandler:
         if existingProject == None:
             return projectJoined, "Project does not exist"
         existingUsers = existingProject.get("users", [])
+        if criteria["userName"] in existingUsers:
+            return projectJoined, "User is already in Project"
         #gets list of users for project
         existingUsers.append(criteria["userName"])
         #update the username list in the document
@@ -72,7 +74,7 @@ class ProjectHandler:
         if criteria["userName"] in newUsers:
             projectJoined = True
             return projectJoined, _err
-        return projectJoined, "User was not added to project"
+        return projectJoined, "User was not added to Project"
 
 
     def isUserInProject(self, criteria : dict):
