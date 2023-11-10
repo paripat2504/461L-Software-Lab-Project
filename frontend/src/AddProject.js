@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import Modal from 'react-modal';
 import { useAuth } from './UserContext';
 
-function AddProject({isOpen, onRequestClose}) {
+function AddProject({fetchProjects, isOpen, onRequestClose}) {
     const { userName } = useAuth();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -44,9 +44,7 @@ function AddProject({isOpen, onRequestClose}) {
                 setDescription('');
                 setID('');
                 setMessage('');
-                const projects = JSON.parse(localStorage.getItem('projectsData')) || [];
-                projects.push({projectName:name, projectDescription:description, projectID:id, Computers_CheckedOut:0, Servers_CheckedOut:0});
-                localStorage.setItem('projectsData', JSON.stringify(projects));
+                fetchProjects();
             }
           } catch (err) {                                      
             console.error(err);

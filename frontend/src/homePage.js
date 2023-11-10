@@ -134,7 +134,7 @@ function HomePage(props) {
                 <div className="w-95 border-t-8 rounded-md border-amber-600 bg-white h-24 p-5 shadow-2xl">
                   <div>
                     <Button variant="contained" color="primary" onClick={openAddModal}>Add Project</Button>
-                    <AddProject isOpen={isAddModalOpen} onRequestClose={closeAddModal}/>
+                    <AddProject fetchProjects={fetchProjects} isOpen={isAddModalOpen} onRequestClose={closeAddModal}/>
                   </div>
                   <div>
                     <Button variant="contained" color="primary" onClick={openJoinModal}>Join Project</Button>
