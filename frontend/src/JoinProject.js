@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import Modal from 'react-modal';
 import { useAuth } from './UserContext';
 
-function JoinProject({isOpen, onRequestClose}) {
+function JoinProject({fetchProjects, isOpen, onRequestClose}) {
     const navigate = useNavigate();
     const { userName } = useAuth();
     const [id, setID] = useState('');
@@ -33,6 +33,7 @@ function JoinProject({isOpen, onRequestClose}) {
                 onRequestClose();
                 setID('');
                 setMessage('');
+                fetchProjects();
             }
           } catch (err) {                                      
             console.error(err);

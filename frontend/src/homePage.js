@@ -18,31 +18,33 @@ function HomePage(props) {
   const openJoinModal = () => setIsJoinModalOpen(true);
   const closeJoinModal = () => setIsJoinModalOpen(false);
   const [proj, setProjects] = useState([]);
+  const [resources, setResources] = useState([]);
+  
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/displayProjects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userName: userName })
+      });
+    
+      const data = await response.json();
+
+      if (data.message === "Project Retrieved successfully") {
+        localStorage.setItem('projectsData', JSON.stringify(data.projects));
+        setProjects(data.projects)
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("An error occured: " + err)
+    };
+  }
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/displayProjects', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ userName: userName })
-        });
-      
-        const data = await response.json();
 
-        if (data.message === "Project Retrieved successfully") {
-          localStorage.setItem('projectsData', JSON.stringify(data.projects));
-          setProjects(data.projects)
-        }
-
-      } catch (err) {
-        console.error(err);
-        alert("An error occured: " + err)
-      };
-    }
-  
     const cachedProjects = localStorage.getItem('projectsData');
 
     if (cachedProjects) {
@@ -53,6 +55,41 @@ function HomePage(props) {
     };
   }, [userName]);
 
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/displayHardware', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.message === "Sucessfully Gathered Avaiabilities and Capacities") {
+          
+          console.log(data)
+          localStorage.setItem('hardwareData', data);
+          setResources(data)
+        }
+      } catch (err) {
+        console.error(err);
+        alert("An error occured: " + err)
+      };
+    }
+
+    const cachedResources = localStorage.getItem('hardwareData');
+
+    if (cachedResources) {
+      setResources(cachedResources);
+    } else {
+      fetchResources();
+    };
+  }, []);
+
+  console.log(resources)
+
   if (userId === null) {
     //Navigate to login page
     return <Navigate to='/' />;
@@ -62,14 +99,11 @@ function HomePage(props) {
   const handleLogout = () => {
     logout()
     localStorage.removeItem('projectsData');
+    localStorage.removeItem('hardwareData');
     navigate('/');
   }
-
-  // const projects = [{Computers_CheckedOut:0, Servers_CheckedOut:0, Project_Name:'Project 1', Project_Description:'This is a longer description of the project and I want to achieve very much with this project that I am enjoying a lot', id:'1'}];
   
   const projects = proj;
-  console.log(projects)
-
     return (
     <div>    
        <div className="container mx-auto pt-14">
@@ -104,7 +138,7 @@ function HomePage(props) {
                   </div>
                   <div>
                     <Button variant="contained" color="primary" onClick={openJoinModal}>Join Project</Button>
-                    <JoinProject isOpen={isJoinModalOpen} onRequestClose={closeJoinModal}/>
+                    <JoinProject fetchProjects={fetchProjects}  isOpen={isJoinModalOpen} onRequestClose={closeJoinModal}/>
                   </div>
                   <Button variant="contained" color="primary" onClick={handleLogout}>Sign Out</Button>
                 </div>

@@ -44,6 +44,9 @@ function AddProject({isOpen, onRequestClose}) {
                 setDescription('');
                 setID('');
                 setMessage('');
+                const projects = JSON.parse(localStorage.getItem('projectsData')) || [];
+                projects.push({projectName:name, projectDescription:description, projectID:id, Computers_CheckedOut:0, Servers_CheckedOut:0});
+                localStorage.setItem('projectsData', JSON.stringify(projects));
             }
           } catch (err) {                                      
             console.error(err);
