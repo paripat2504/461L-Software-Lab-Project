@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUpForm from './SignUpForm';
 import HomePage from './homePage';
-import AddProject from './tempAddProject';
+import AddProject from './AddProject';
 
 function App() {
   return (
