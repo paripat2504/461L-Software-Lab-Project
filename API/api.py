@@ -14,15 +14,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
 
-debugMode = True
-userHandler = uH(debugMode)
-projHandler = projH(debugMode)
-
+userHandler = uH(True)
+projHandler = projH(True)
 
 # Create the Flask application
 app = Flask(__name__)
 CORS(app)
-
 
 # Create an instance of the Database class
 
@@ -34,7 +31,7 @@ def login():
     password = data.get('password')
     
     if userID and password:
-        
+        #include username, get username from database
         validLogin, _err = userHandler.validateUser({"userID":userID, "password":password})
         # Call the login function from the Database class
         
@@ -133,7 +130,7 @@ def checkIntHWSet(projectID,hwSetID,amountRequested):
     if err != None:
         return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
     else:
-        return jsonify({'message':''})
+        return jsonify({'message':err})
 
 @app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
 def checkOutHWSet(projectID,hwSetID,amountRequested):
