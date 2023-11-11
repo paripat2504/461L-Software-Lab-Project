@@ -160,5 +160,5 @@ def displayHardware():
 # Run the Flask application
 if __name__ == '__main__':
     
-    app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+    app.run(host='mysterious-everglades-11029-c622e00a9e3b.herokuapp.com', debug=False, port=os.environ.get('PORT', 80))
 
