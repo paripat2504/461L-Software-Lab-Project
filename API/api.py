@@ -14,11 +14,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
 
-userHandler = uH(True)
-projHandler = projH(True)
+debugMode = False
+
+userHandler = uH(debugMode)
+projHandler = projH(debugMode)
 
 # Create the Flask application
 app = Flask(__name__)
+
 CORS(app)
 
 # Create an instance of the Database class
@@ -65,8 +68,8 @@ def signup():
         return jsonify({'message': 'Invalid request'})
 
 
-    
-    
+
+
 # Define project endpoint and logic
 @app.route('/project', methods=['POST'])
 def project():
@@ -78,7 +81,7 @@ def project():
     
     if userName and projectName and projectDescription and projectID:
         
-        projCreated, _err = projHandler.createProject({"userName":userName, "projectName":projectName, "projectDescription":projectDescription, "projectID":projectID, })
+        projCreated, _err = projHandler.createProject({"userName":userName, "projectName":projectName, "projectDescription":projectDescription, "projectID":projectID})
         # Call the login function from the Database class
         
         if projCreated == True:
@@ -98,7 +101,7 @@ def projectJoin():
     
     if userName and projectID:
         
-        projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID, })
+        projJoined, _err = projHandler.joinProject({"userName":userName, "projectID":projectID})
         
         if projJoined == True:
             return jsonify({'message': 'Project Joined successfully'})
@@ -124,23 +127,37 @@ def displayProjects():
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
 
-@app.route('/checkInHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkIntHWSet(projectID,hwSetID,amountRequested):
-    projHandler.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+@app.route('/checkInHWSet', methods=['POST'])
+def checkInHWSet():
+    data = request.get_json()
+    projHandler.checkInHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
     err = None
-    if err != None:
-        return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
+    if err == None:
+        return jsonify({'message': "Successfully Checked in " + data['amountRequested'] + " " + data['hwSetID']})
     else:
         return jsonify({'message':err})
 
-@app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkOutHWSet(projectID,hwSetID,amountRequested):
-    projHandler.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
-
-    return jsonify({'message':''})
+@app.route('/checkOutHWSet', methods=['POST'])
+def checkOutHWSet():
     
+    data = request.get_json()
+    projHandler.checkOutHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
+    err = None
+    if err == None:
+        return jsonify({'message': "Successfully Checked out " + data['amountRequested'] + " " + data['hwSetID']})
+    else:
+        return jsonify({'message':err})
+
+@app.route('/displayHardware', methods=['POST'])
+def displayHardware():
+    HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity = projHandler.displayHardware()
+    hw_dict = {'HWSet1Availability':HWSet1Availability, 'HWSet2Availability':HWSet2Availability, 'HWSet1Capacity':HWSet1Capacity, 'HWSet2Capacity':HWSet2Capacity}
+    if True:
+        return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'hw_dict':hw_dict})
+    else:
+        return jsonify({'message' : "HWSet info couldnt be retrieved"})
 # Run the Flask application
 if __name__ == '__main__':
-
-    app.run()
+    
+    app.run(debug=False)
 

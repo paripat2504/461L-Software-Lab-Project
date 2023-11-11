@@ -33,15 +33,17 @@ class HWSetHandler:
         return returnVal, doesHWSetExist
     
     def getHWSetAvailability(self, criteria : dict):
-         x, _err = self.findHWSet(criteria['hwSetID'])
-         return x['availability']
+         x, _err = self.findHWSet(criteria.get('hwSetID'))
+         val = x.get('availability')
+         return val
 
     def getHWSetQty(self, criteria : dict):
-         x, _err = self.findHWSet(criteria['hwSetID'])
-         return x['qty']
+         x, _err = self.findHWSet(criteria.get('hwSetID'))
+         val = x.get('qty')
+         return val
     
     def setHWSetAvailability(self, criteria : dict):
-        self.__HWSet.update_one({'hwSetID':criteria['hwSetID']},{"$set" : {'availability':criteria['amtToSet']}})
+        self.__HWSet.update_one({'hwSetID':criteria.get('hwSetID')},{"$set" : {'availability':criteria.get('amtToSet')}})
     
 
     def initializeHWSet(self,hwSetID: str,availability: int):
@@ -57,37 +59,37 @@ class HWSetHandler:
 
 
     def checkOutHWSet(self,criteria : dict):
-        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria.get('hwSetID')})
         newHWSetVal = 0
 
-        if int(criteria['amountRequested']) > availableHWSet:
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':0})
+        if int(criteria.get('amountRequested')) > availableHWSet:
+            self.setHWSetAvailability({'hwSetID':criteria.get('hwSetID'),'amtToSet':0})
             newHWSetVal = availableHWSet
         else:
-            availableHWSet -= int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
-            newHWSetVal = int(criteria['amountRequested'])
+            availableHWSet -= int(criteria.get('amountRequested'))
+            self.setHWSetAvailability({'hwSetID':criteria.get('hwSetID'),'amtToSet':availableHWSet})
+            newHWSetVal = int(criteria.get('amountRequested'))
 
         return newHWSetVal
 
     def checkInHWSet(self,criteria : dict):
-        HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
-        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
+        HWSetqty = criteria['amountRequested']
+        availableHWSet = self.getHWSetAvailability({'hwSetID':criteria.get('hwSetID')})
         newHWSetVal = 0
-        comparator = int(criteria['amountRequested']) + availableHWSet
-        if comparator > availableHWSet:
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
-            newHWSetVal = 0
-        else:
-            availableHWSet += int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
-            newHWSetVal = int(criteria['amountRequested'])
-        
+        comparator = int(criteria.get('amountRequested')) + int(availableHWSet)
+        # if comparator > availableHWSet:
+        #     self.setHWSetAvailability({'hwSetID':criteria.get('hwSetID'),'amtToSet':HWSetqty})
+        #     newHWSetVal = 0
+        # else:
+        #     availableHWSet += int(criteria.get('amountRequested'))
+        #     self.setHWSetAvailability({'hwSetID':criteria.get('hwSetID'),'amtToSet':availableHWSet})
+        #     newHWSetVal = int(criteria.get('amountRequested'))
+        self.setHWSetAvailability({'hwSetID':criteria.get('hwSetID'),'amtToSet':comparator})
         return newHWSetVal
         
         
 
-# h = HWSetHandler(True)
-# x = h.checkOutHWSet({'hwSetID':'Servers','amountRequested':20})
-# x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
+#h = HWSetHandler(True)
+#x = h.checkOutHWSet({'hwSetID':'Servers','amountRequested':20})
+#x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
 # y = 4
