@@ -8,18 +8,29 @@ import {useState, useEffect } from 'react';
 import JoinProject from './JoinProject';
 import AddProject from './AddProject';
 import ResourceTable from './Resources';
+import ManageResources from './ManageResources';
+
+function useModal(initialState = false) {
+  const [isOpen, setIsOpen] = useState(initialState);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+  return [isOpen, openModal, closeModal];
+}
 
 function HomePage() {
   const { userId, userName, logout } = useAuth();
   const navigate = useNavigate();
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const openAddModal = () => setIsAddModalOpen(true);
-  const closeAddModal = () => setIsAddModalOpen(false);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const openJoinModal = () => setIsJoinModalOpen(true);
-  const closeJoinModal = () => setIsJoinModalOpen(false);
+  const [isAddModalOpen, openAddModal, closeAddModal] = useModal(false);
+  const [isJoinModalOpen, openJoinModal, closeJoinModal] = useModal(false);
+  const [isHWModalOpen, openHWModal, closeHWModal] = useModal(false);
   const [proj, setProjects] = useState([]);
   const [resources, setResources] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const handleManageResources = (project) => {
+    setSelectedProject(project);
+    openHWModal();
+  };
   
   const fetchProjects = async () => {
     try {
@@ -116,7 +127,17 @@ function HomePage() {
             <p className="flex justify-center font-bold text-3xl">Projects</p>
             <div className="border-t-4 rounded-full border-slate-100 my-3"/>
             <div className="overflow-y-auto h-4/5">
-              <ProjectTable projects={projects}></ProjectTable>
+              <ProjectTable projects={projects} onManageResources={handleManageResources}/>
+              {selectedProject && (
+                <ManageResources
+                  isOpen={isHWModalOpen}
+                  onRequestClose={() => {
+                    closeHWModal();
+                    setSelectedProject(null);
+                  }}
+                  project={selectedProject}
+                />
+              )}
             </div>
           </div>
         </div>
