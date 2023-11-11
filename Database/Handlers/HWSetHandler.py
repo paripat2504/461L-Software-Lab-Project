@@ -74,13 +74,13 @@ class HWSetHandler:
         HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
         newHWSetVal = 0
-        comparator = int(criteria['amountRequested']) + availableHWSet
-        if comparator > availableHWSet:
+        comparator = int(criteria['amountRequested']) + int(availableHWSet[0])
+        if comparator > availableHWSet[0]:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
             newHWSetVal = 0
         else:
-            availableHWSet += int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            availableHWSet[0] += int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet[0]})
             newHWSetVal = int(criteria['amountRequested'])
         
         return newHWSetVal

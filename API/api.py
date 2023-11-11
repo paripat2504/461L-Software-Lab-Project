@@ -66,7 +66,7 @@ def signup():
 
 
 
-    
+
 # Define project endpoint and logic
 @app.route('/project', methods=['POST'])
 def project():
@@ -124,12 +124,13 @@ def displayProjects():
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
 
-@app.route('/checkInHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkIntHWSet(projectID,hwSetID,amountRequested):
+@app.route('/checkInHWSet/<projectID>/<hwSetID>/<amountRequested>', methods=['POST'])
+def checkInHWSet(projectID,hwSetID,amountRequested):
+
     projHandler.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
     err = None
     if err != None:
-        return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
+        return jsonify({'message':f'Successfully Checked in {amountRequested} {hwSetID}'})
     else:
         return jsonify({'message':err})
 
@@ -149,6 +150,6 @@ def displayHardware():
         return jsonify({'message' : "HWSet info couldnt be retrieved"})
 # Run the Flask application
 if __name__ == '__main__':
-
-    app.run()
+    
+    app.run(debug=True)
 
