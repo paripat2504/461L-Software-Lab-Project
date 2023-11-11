@@ -4,8 +4,7 @@ import { useNavigate } from "react-router";
 import Modal from 'react-modal';
 import { useAuth } from './UserContext';
 
-function AddProject({isOpen, onRequestClose}) {
-    const navigate = useNavigate();
+function AddProject({fetchProjects, isOpen, onRequestClose}) {
     const { userName } = useAuth();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -44,6 +43,8 @@ function AddProject({isOpen, onRequestClose}) {
                 setName('');
                 setDescription('');
                 setID('');
+                setMessage('');
+                fetchProjects();
             }
           } catch (err) {                                      
             console.error(err);
@@ -52,10 +53,6 @@ function AddProject({isOpen, onRequestClose}) {
           };
 
 
-    }
-
-    const handleClick = (e) => {
-        e.preventDefault();
     }
 
     const handleID = (e) => {
@@ -74,7 +71,7 @@ function AddProject({isOpen, onRequestClose}) {
                 className="text-black h-6 w-6 text-4xl block outline-none focus:outline-none absolute top-1 right-5"
                 onClick={onRequestClose}
             >×</button>
-            <form onSubmit={handleClick}>
+            <form onSubmit={handleConfirm}>
                 <h1 className="font-bold text-center block text-3xl">Create new project</h1>
                 <div>
                     <label className="text-gray-500 block mt-3">Name</label>

@@ -54,15 +54,27 @@ class ProjectHandler:
     def joinProject(self, criteria : dict):
         #if there is already an existing project, update the project if the user is different
 
-        projectID = criteria["id"]
+        _err = None
+        projectJoined = False
+        projectID = criteria["projectID"]
         existingProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+        if existingProject == None:
+            return projectJoined, "Project does not exist"
         existingUsers = existingProject.get("users", [])
+        if criteria["userName"] in existingUsers:
+            return projectJoined, "User is already in Project"
         #gets list of users for project
-        existingUsers.append(criteria["username"])
+        existingUsers.append(criteria["userName"])
         #update the username list in the document
         existingProject["users"] = existingUsers
         self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
 
+        newProject = self.__Projects.find_one({"projectID" : criteria["projectID"]})
+        newUsers = newProject.get("users", [])
+        if criteria["userName"] in newUsers:
+            projectJoined = True
+            return projectJoined, _err
+        return projectJoined, "User was not added to Project"
 
 
     def isUserInProject(self, criteria : dict):
@@ -117,22 +129,42 @@ class ProjectHandler:
         if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
         else: setToUpdate = 'Servers_CheckedOut'
 
-        updatedHWSet = x[setToUpdate] + newHWSet_Val
+        updatedHWSet = x.get(setToUpdate) + newHWSet_Val
         self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
         
 
 
     def checkInHardwareSet(self, criteria : dict):
-        
-        newHWSet_Val = self.__hwHandler.checkInHWSet(criteria)
-        x = self.__Projects.find_one({'projectID':criteria['projectID']})
         setToUpdate = None
-
         if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
         else: setToUpdate = 'Servers_CheckedOut'
+        qtyWantToCheckIn = criteria['amountRequested'] 
+        projectID = criteria['projectID']
+        HW = criteria["hwSetID"]
+        existingProject = self.__Projects.find_one({"projectID" : projectID})
+        qtyCheckedOut = existingProject.get(setToUpdate)
+        if qtyWantToCheckIn > qtyCheckedOut:qtyCheckIn = qtyCheckedOut
+        else: qtyCheckIn = qtyWantToCheckIn
+        criteria["amountRequested"] = qtyCheckIn
+        newHWSet_Val = self.__hwHandler.checkInHWSet(criteria)
+        
+        updatedHWSet = existingProject[setToUpdate] - qtyCheckIn
+        existingProject[setToUpdate] = updatedHWSet
+        self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
 
-        updatedHWSet = x[setToUpdate] - newHWSet_Val
-        self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
+    def displayHardware(self):
+        HWSet1Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Computers'})
+        HWSet2Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Servers'})
+        HWSet1Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Computers'})
+        HWSet2Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Servers'})
+        return HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity
+    
+pj = ProjectHandler()
+pj.checkInHardwareSet({'projectID': 'JohnTest','hwSetID': 'Computers','amountRequested': 5})
+
+
+ 
+
         
         
-        
+
