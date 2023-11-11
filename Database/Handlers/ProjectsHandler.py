@@ -135,23 +135,33 @@ class ProjectHandler:
 
 
     def checkInHardwareSet(self, criteria : dict):
-        
-        newHWSet_Val = self.__hwHandler.checkInHWSet(criteria)
-        x = self.__Projects.find_one({'projectID':criteria['projectID']})
         setToUpdate = None
-
         if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
         else: setToUpdate = 'Servers_CheckedOut'
-
-        updatedHWSet = x[setToUpdate] - newHWSet_Val
-        self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
+        qtyWantToCheckIn = criteria['amountRequested'] 
+        projectID = criteria['projectID']
+        HW = criteria["hwSetID"]
+        existingProject = self.__Projects.find_one({"projectID" : projectID})
+        qtyCheckedOut = existingProject.get(setToUpdate)
+        if qtyWantToCheckIn > qtyCheckedOut:qtyCheckIn = qtyCheckedOut
+        else: qtyCheckIn = qtyWantToCheckIn
+        criteria["amountRequested"] = qtyCheckIn
+        newHWSet_Val = self.__hwHandler.checkInHWSet(criteria)
         
+        updatedHWSet = existingProject[setToUpdate] - qtyCheckIn
+        existingProject[setToUpdate] = updatedHWSet
+        self.__Projects.update_one({"projectID" : projectID}, {"$set" : existingProject})
+
     def displayHardware(self):
         HWSet1Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Computers'})
         HWSet2Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Servers'})
         HWSet1Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Computers'})
         HWSet2Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Servers'})
         return HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity
+    
+pj = ProjectHandler()
+pj.checkInHardwareSet({'projectID': 'JohnTest','hwSetID': 'Computers','amountRequested': 5})
+
 
  
 
