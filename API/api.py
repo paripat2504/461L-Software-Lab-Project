@@ -131,7 +131,7 @@ def checkInHWSet():
     data = request.get_json()
     projHandler.checkInHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
     err = None
-    if err != None:
+    if err == None:
         return jsonify({'message': "Successfully Checked in " + data['amountRequested'] + " " + data['hwSetID']})
     else:
         return jsonify({'message':err})
@@ -142,7 +142,7 @@ def checkOutHWSet():
     data = request.get_json()
     projHandler.checkOutHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
     err = None
-    if err != None:
+    if err == None:
         return jsonify({'message': "Successfully Checked out " + data['amountRequested'] + " " + data['hwSetID']})
     else:
         return jsonify({'message':err})

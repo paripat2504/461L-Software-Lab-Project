@@ -57,7 +57,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 console.log(data)
                 //Handle message
                 alert(data.message);
-                if(data.message === 'Hardware checked in successfully'){
+                if(data.message === "Successfully Checked in " + qty + " " + selectedValue){
                     onRequestClose();
                     setQty('');
                     setMessage('');
@@ -90,7 +90,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 console.log(data)
                 //Handle message
                 alert(data.message);
-                if(data.message === 'Hardware checked out successfully'){
+                if(data.message === "Successfully Checked out " + qty + " " + selectedValue){
                     onRequestClose();
                     setQty('');
                     setMessage('');
