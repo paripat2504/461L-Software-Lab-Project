@@ -22,7 +22,8 @@ function Resource({HW, availability, capacity}) {
 
 
 function ResourceTable( {resources} ) {
-    return (
+  console.log(resources)  
+  return (
       <div>
         <Resource HW={"Computers"} availability={resources.HWSet1Availability} capacity={resources.HWSet1Capacity} />
         <Resource HW={"Servers"} availability={resources.HWSet2Availability} capacity={resources.HWSet2Capacity} />

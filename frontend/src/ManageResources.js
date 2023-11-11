@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 
 
 
-function ManageResourcesContent({ onRequestClose, project }) {
+function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchResources }) {
     const [modalContent, setModalContent] = useState('default');
     const [qty, setQty] = useState('');
     const [message, setMessage] = useState('');
@@ -61,6 +61,8 @@ function ManageResourcesContent({ onRequestClose, project }) {
                     onRequestClose();
                     setQty('');
                     setMessage('');
+                    fetchProjects();
+                    fetchResources();
                 }
               } catch (err) {                                      
                 console.error(err);
@@ -92,6 +94,8 @@ function ManageResourcesContent({ onRequestClose, project }) {
                     onRequestClose();
                     setQty('');
                     setMessage('');
+                    fetchProjects();
+                    fetchResources();
                 }
               } catch (err) {                                      
                 console.error(err);
@@ -222,7 +226,7 @@ function ManageResourcesContent({ onRequestClose, project }) {
     );
   }
 
-function ManageResources({ isOpen, onRequestClose, project }) {
+function ManageResources({ isOpen, onRequestClose, project, fetchProjects, fetchResources }) {
 
     return (
         <Modal 
@@ -234,6 +238,8 @@ function ManageResources({ isOpen, onRequestClose, project }) {
             <ManageResourcesContent 
                 project = {project}
                 onRequestClose={onRequestClose}
+                fetchProjects={fetchProjects}
+                fetchResources={fetchResources}
             />
         </Modal>
     );

@@ -149,9 +149,9 @@ def checkOutHWSet():
 
 @app.route('/displayHardware', methods=['POST'])
 def displayHardware():
-    HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity, _err = projHandler.displayHardware()
+    HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity = projHandler.displayHardware()
     hw_dict = {'HWSet1Availability':HWSet1Availability, 'HWSet2Availability':HWSet2Availability, 'HWSet1Capacity':HWSet1Capacity, 'HWSet2Capacity':HWSet2Capacity}
-    if _err == True:
+    if True:
         return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'hw_dict':hw_dict})
     else:
         return jsonify({'message' : "HWSet info couldnt be retrieved"})

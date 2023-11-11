@@ -66,7 +66,7 @@ function HomePage() {
       const data = await response.json();
       if (data.message === "Sucessfully Gathered Avaiabilities and Capacities") {
         localStorage.setItem('hardwareData', JSON.stringify(data.hw_dict));
-        setResources(data)
+        setResources(data.hw_dict)
       }
     } catch (err) {
       console.error(err);
@@ -136,6 +136,8 @@ function HomePage() {
                     setSelectedProject(null);
                   }}
                   project={selectedProject}
+                  fetchProjects={fetchProjects} 
+                  fetchResources={fetchResources}
                 />
               )}
             </div>
