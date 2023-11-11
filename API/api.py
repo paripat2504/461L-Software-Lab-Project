@@ -19,7 +19,8 @@ projHandler = projH(True)
 
 # Create the Flask application
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "https://mejiasoftwareproject-ba462176bcee.herokuapp.com"}})
+
 
 # Create an instance of the Database class
 

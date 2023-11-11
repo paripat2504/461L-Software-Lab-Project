@@ -18,7 +18,7 @@ function JoinProject({fetchProjects, isOpen, onRequestClose}) {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/projectJoin', {
+            const response = await fetch('https://mejiasoftwareproject-ba462176bcee.herokuapp.com/projectJoin', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

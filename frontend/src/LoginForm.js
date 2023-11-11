@@ -30,7 +30,7 @@ function LoginForm() {
           return;
         }
         try {
-          const response = await fetch('http://localhost:5000/login', {
+          const response = await fetch('https://mejiasoftwareproject-ba462176bcee.herokuapp.com/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

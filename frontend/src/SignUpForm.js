@@ -38,7 +38,7 @@ function SignUpForm() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/signup', {
+      const response = await fetch('https://mejiasoftwareproject-ba462176bcee.herokuapp.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

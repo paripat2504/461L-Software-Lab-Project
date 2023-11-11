@@ -32,7 +32,7 @@ function ManageResourcesContent({ onRequestClose, project }) {
         if(modalContent === 'checkIn') {
             //Check in hardware
             try {
-                const response = await fetch(`http://localhost:5000/checkInHWSet/${project.projectID}/${selectedValue}/${qty}`, {
+                const response = await fetch(`https://mejiasoftwareproject-ba462176bcee.herokuapp.com/checkInHWSet/${project.projectID}/${selectedValue}/${qty}`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ function ManageResourcesContent({ onRequestClose, project }) {
         } else if (modalContent === 'checkOut') {
             //Check out hardware
             try {
-                const response = await fetch(`http://localhost:5000/checkOutHWSet/${project.projectID}/${selectedValue}/${qty}`, {
+                const response = await fetch(`https://mejiasoftwareproject-ba462176bcee.herokuapp.com/checkOutHWSet/${project.projectID}/${selectedValue}/${qty}`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
