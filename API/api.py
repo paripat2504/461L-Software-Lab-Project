@@ -107,6 +107,24 @@ def projectJoin():
             return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request'})
+
+@app.route('/projectLeave', methods=['POST'])
+def projectJoin():
+    data = request.get_json()
+    userName = data.get('userName')
+    projectID = data.get('projectID')
+    
+    if userName and projectID:
+        
+        projJoined, _err = projHandler.leaveProject({"userName":userName, "projectID":projectID})
+        
+        if projJoined == True:
+            return jsonify({'message': 'Project Joined successfully'})
+        
+        else:
+            return jsonify({'message': _err})
+    else:
+        return jsonify({'message': 'Invalid request'})
     
 @app.route('/displayProjects', methods=['POST'])
 def displayProjects():
@@ -146,6 +164,9 @@ def displayHardware():
         return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'HWSet1Availability' : HWSet1Availability, 'HWSet2Availability' : HWSet2Availability, 'HWSet1Capacity' : HWSet1Capacity, 'HWSet2Capacity' : HWSet2Capacity})
     else:
         return jsonify({'message' : "HWSet info couldnt be retrieved"})
+    
+    
+    
 # Run the Flask application
 if __name__ == '__main__':
 

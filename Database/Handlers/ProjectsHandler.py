@@ -76,6 +76,10 @@ class ProjectHandler:
             return projectJoined, _err
         return projectJoined, "User was not added to Project"
 
+    def leaveProject(self, criteria : dict):
+        username = criteria['userName']
+        projectID = criteria['projectID']
+        
 
     def isUserInProject(self, criteria : dict):
         #check to see if user is in the project

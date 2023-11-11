@@ -60,12 +60,12 @@ class HWSetHandler:
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
         newHWSetVal = 0
 
-        if int(criteria['amountRequested']) > availableHWSet:
+        if int(criteria['amountRequested']) > availableHWSet[0]:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':0})
-            newHWSetVal = availableHWSet
+            newHWSetVal = availableHWSet[0]
         else:
-            availableHWSet -= int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            availableHWSet[0] -= int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet[0]})
             newHWSetVal = int(criteria['amountRequested'])
 
         return newHWSetVal
@@ -74,20 +74,20 @@ class HWSetHandler:
         HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
         newHWSetVal = 0
-        comparator = int(criteria['amountRequested']) + availableHWSet
-        if comparator > availableHWSet:
+        comparator = int(criteria['amountRequested']) + availableHWSet[0]
+        if comparator > availableHWSet[0]:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
             newHWSetVal = 0
         else:
-            availableHWSet += int(criteria['amountRequested'])
-            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet})
+            availableHWSet[0] += int(criteria['amountRequested'])
+            self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':availableHWSet[0]})
             newHWSetVal = int(criteria['amountRequested'])
         
         return newHWSetVal
         
         
 
-# h = HWSetHandler(True)
-# x = h.checkOutHWSet({'hwSetID':'Servers','amountRequested':20})
+h = HWSetHandler(True)
+x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
 # x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
 # y = 4
