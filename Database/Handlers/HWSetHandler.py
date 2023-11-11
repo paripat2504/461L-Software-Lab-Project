@@ -74,11 +74,7 @@ class HWSetHandler:
         HWSetqty = self.getHWSetQty({'hwSetID':criteria['hwSetID']})
         availableHWSet = self.getHWSetAvailability({'hwSetID':criteria['hwSetID']})
         newHWSetVal = 0
-<<<<<<< HEAD
-        comparator = int(criteria['amountRequested']) + availableHWSet[0]
-=======
         comparator = int(criteria['amountRequested']) + int(availableHWSet[0])
->>>>>>> a997fda4ce637e06c2d67a4b59375bf0d47f572b
         if comparator > availableHWSet[0]:
             self.setHWSetAvailability({'hwSetID':criteria['hwSetID'],'amtToSet':HWSetqty})
             newHWSetVal = 0
@@ -91,7 +87,7 @@ class HWSetHandler:
         
         
 
-h = HWSetHandler(True)
-x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
+#h = HWSetHandler(True)
+#x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
 # x = h.checkInHWSet({'hwSetID':'Servers','amountRequested':20})
 # y = 4
