@@ -14,7 +14,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
 
-debugMode = True
+debugMode = False
+
 userHandler = uH(debugMode)
 projHandler = projH(debugMode)
 
