@@ -129,7 +129,7 @@ class ProjectHandler:
         if criteria['hwSetID'] == 'Computers': setToUpdate = 'Computers_CheckedOut'
         else: setToUpdate = 'Servers_CheckedOut'
 
-        updatedHWSet = x[setToUpdate] + newHWSet_Val
+        updatedHWSet = x.get(setToUpdate) + newHWSet_Val
         self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
         
 
@@ -147,12 +147,11 @@ class ProjectHandler:
         self.__Projects.update_one({'projectID':x['projectID']},{'$set':{setToUpdate:updatedHWSet}})
         
     def displayHardware(self):
-        HWSet1Availability, _err1 = self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Computers'})
-        HWSet2Availability, _err2 = self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Servers'})
-        HWSet1Capacity, _err3 = self.__hwHandler.getHWSetQty({'hwSetID' : 'Computers'})
-        HWSet2Capacity, _err4 = self.__hwHandler.getHWSetQty({'hwSetID' : 'Servers'})
-        _err = _err1 and _err2 and _err3 and _err4
-        return HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity, _err
+        HWSet1Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Computers'})
+        HWSet2Availability= self.__hwHandler.getHWSetAvailability({'hwSetID' : 'Servers'})
+        HWSet1Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Computers'})
+        HWSet2Capacity= self.__hwHandler.getHWSetQty({'hwSetID' : 'Servers'})
+        return HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity
 
  
 
