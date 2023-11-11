@@ -124,21 +124,25 @@ def displayProjects():
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
 
-@app.route('/checkInHWSet/<projectID>/<hwSetID>/<amountRequested>', methods=['POST'])
-def checkInHWSet(projectID,hwSetID,amountRequested):
-
-    projHandler.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+@app.route('/checkInHWSet/', methods=['POST'])
+def checkInHWSet():
+    data = request.get_json()
+    projHandler.checkInHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
     err = None
     if err != None:
-        return jsonify({'message':f'Successfully Checked in {amountRequested} {hwSetID}'})
+        return jsonify({'message': "Successfully Checked in " + data['amountRequested'] + " " + data['hwSetID']})
     else:
         return jsonify({'message':err})
 
-@app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkOutHWSet(projectID,hwSetID,amountRequested):
-    projHandler.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
-
-    return jsonify({'message':''})
+@app.route('/checkOutHWSet/', methods=['POST'])
+def checkOutHWSet():
+    data = request.get_json()
+    projHandler.checkOutHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
+    err = None
+    if err != None:
+        return jsonify({'message': "Successfully Checked out " + data['amountRequested'] + " " + data['hwSetID']})
+    else:
+        return jsonify({'message':err})
 
 @app.route('/displayHardware', methods=['POST'])
 def displayHardware():
