@@ -2,7 +2,7 @@
 import { useState } from 'react'; 
 import Button from '@mui/material/Button';
 
-function Project({project}) {
+function Project({project, onManageResources}) {
     
 
     return (
@@ -21,7 +21,7 @@ function Project({project}) {
                     <p className="text-base">Servers Used</p>
                 </div>
                 <div className="justify-center">
-                  <Button variant="contained" color="primary">Manage Resources</Button>
+                  <Button variant="contained" color="primary" onClick={() => onManageResources(project)}>Manage Resources</Button>
                   <div className='pt-4'/>
                   <Button variant="contained" color="primary">Leave Project</Button>
                 </div>
@@ -30,14 +30,14 @@ function Project({project}) {
     );
 }
 
-function ProjectTable({ projects }) {
+function ProjectTable({ projects, onManageResources }) {
   return (
     <div>
       {projects.length === 0 ? (
         <p className="text-base justify-center flex font-bold">No projects to display. Join or create one!</p>
       ) : (
         projects.map((project) => (
-          <Project key={project.projectID} project={project} />
+          <Project key={project.projectID} project={project} onManageResources={onManageResources}/>
         ))
       )}
     </div>

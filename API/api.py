@@ -65,8 +65,8 @@ def signup():
         return jsonify({'message': 'Invalid request'})
 
 
-    
-    
+
+
 # Define project endpoint and logic
 @app.route('/project', methods=['POST'])
 def project():
@@ -142,26 +142,32 @@ def displayProjects():
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
 
-@app.route('/checkInHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkIntHWSet(projectID,hwSetID,amountRequested):
-    projHandler.checkInHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
+@app.route('/checkInHWSet', methods=['POST'])
+def checkInHWSet():
+    data = request.get_json()
+    projHandler.checkInHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
     err = None
     if err != None:
-        return jsonify({'message':'Successfully Checked in {amountRequested} {hwSetID}'})
+        return jsonify({'message': "Successfully Checked in " + data['amountRequested'] + " " + data['hwSetID']})
     else:
         return jsonify({'message':err})
 
-@app.route('/checkOutHWSet/<string:projectID>/<string:hwSetID>/<int:amountRequested>', methods=['POST'])
-def checkOutHWSet(projectID,hwSetID,amountRequested):
-    projHandler.checkOutHardwareSet({'projectID':projectID,'hwSetID':hwSetID,'amountRequested':amountRequested})
-
-    return jsonify({'message':''})
+@app.route('/checkOutHWSet', methods=['POST'])
+def checkOutHWSet():
+    data = request.get_json()
+    projHandler.checkOutHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
+    err = None
+    if err != None:
+        return jsonify({'message': "Successfully Checked out " + data['amountRequested'] + " " + data['hwSetID']})
+    else:
+        return jsonify({'message':err})
 
 @app.route('/displayHardware', methods=['POST'])
 def displayHardware():
     HWSet1Availability, HWSet2Availability, HWSet1Capacity, HWSet2Capacity, _err = projHandler.displayHardware()
+    hw_dict = {'HWSet1Availability':HWSet1Availability, 'HWSet2Availability':HWSet2Availability, 'HWSet1Capacity':HWSet1Capacity, 'HWSet2Capacity':HWSet2Capacity}
     if _err == True:
-        return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'HWSet1Availability' : HWSet1Availability, 'HWSet2Availability' : HWSet2Availability, 'HWSet1Capacity' : HWSet1Capacity, 'HWSet2Capacity' : HWSet2Capacity})
+        return jsonify({'message':'Sucessfully Gathered Avaiabilities and Capacities', 'hw_dict':hw_dict})
     else:
         return jsonify({'message' : "HWSet info couldnt be retrieved"})
     
@@ -169,6 +175,6 @@ def displayHardware():
     
 # Run the Flask application
 if __name__ == '__main__':
-
-    app.run()
+    
+    app.run(debug=True)
 
