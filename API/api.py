@@ -14,11 +14,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data
 from UserHandler import UserHandler as uH
 from ProjectsHandler import ProjectHandler as projH
 
-userHandler = uH(True)
-projHandler = projH(True)
+debugMode = False
+userHandler = uH(debugMode)
+projHandler = projH(debugMode)
 
 # Create the Flask application
 app = Flask(__name__)
+
 CORS(app)
 
 # Create an instance of the Database class
@@ -78,7 +80,7 @@ def project():
     
     if userName and projectName and projectDescription and projectID:
         
-        projCreated, _err = projHandler.createProject({"userName":userName, "projectName":projectName, "projectDescription":projectDescription, "projectID":projectID, })
+        projCreated, _err = projHandler.createProject({"userName":userName, "projectName":projectName, "projectDescription":projectDescription, "projectID":projectID})
         # Call the login function from the Database class
         
         if projCreated == True:
@@ -127,7 +129,7 @@ def displayProjects():
 @app.route('/checkInHWSet', methods=['POST'])
 def checkInHWSet():
     data = request.get_json()
-    projHandler.checkInHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
+    projHandler.checkInHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
     err = None
     if err != None:
         return jsonify({'message': "Successfully Checked in " + data['amountRequested'] + " " + data['hwSetID']})
@@ -136,8 +138,9 @@ def checkInHWSet():
 
 @app.route('/checkOutHWSet', methods=['POST'])
 def checkOutHWSet():
+    
     data = request.get_json()
-    projHandler.checkOutHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
+    projHandler.checkOutHardwareSet({'projectID':data.get('projectID'),'hwSetID':data.get('hwSetID'),'amountRequested':int(data.get('amountRequested'))})
     err = None
     if err != None:
         return jsonify({'message': "Successfully Checked out " + data['amountRequested'] + " " + data['hwSetID']})
@@ -155,5 +158,5 @@ def displayHardware():
 # Run the Flask application
 if __name__ == '__main__':
     
-    app.run(debug=True)
+    app.run(debug=False)
 

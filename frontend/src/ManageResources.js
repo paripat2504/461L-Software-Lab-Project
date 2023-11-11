@@ -7,11 +7,18 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
 
+
 function ManageResourcesContent({ onRequestClose, project }) {
     const [modalContent, setModalContent] = useState('default');
     const [qty, setQty] = useState('');
     const [message, setMessage] = useState('');
     const [selectedValue, setSelectedValue] = useState('Computers');
+
+    // const express = require('express');
+    // const cors = require('cors');
+    // const app = express();
+
+    // app.use(cors());
 
     const handleRadioChange = (event) => {
         setSelectedValue(event.target.value);
@@ -32,11 +39,18 @@ function ManageResourcesContent({ onRequestClose, project }) {
         if(modalContent === 'checkIn') {
             //Check in hardware
             try {
-                const response = await fetch(`http://localhost:5000/checkInHWSet/${project.projectID}/${selectedValue}/${qty}`, {
+              const jsonData = {
+                projectID: project.projectID,
+                hwSetID : selectedValue,
+                amountRequested : qty
+              }
+                const response = await fetch(`http://127.0.0.1:5000/checkInHWSet`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
+
                   },
+                  body: JSON.stringify(jsonData)
                 });
               
                 const data = await response.json();
@@ -56,11 +70,18 @@ function ManageResourcesContent({ onRequestClose, project }) {
         } else if (modalContent === 'checkOut') {
             //Check out hardware
             try {
-                const response = await fetch(`http://localhost:5000/checkOutHWSet/${project.projectID}/${selectedValue}/${qty}`, {
+              const jsonData = {
+                projectID: project.projectID,
+                hwSetID : selectedValue,
+                amountRequested : qty
+              }
+                const response = await fetch(`http://127.0.0.1:5000/checkOutHWSet`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
                   },
+                  body: JSON.stringify(jsonData)
+
                 });
               
                 const data = await response.json();
