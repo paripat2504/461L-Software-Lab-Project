@@ -56,7 +56,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 const data = await response.json();
                 console.log(data)
                 //Handle message
-                alert(data.message);
+                // alert(data.message);
                 if(data.message === "Successfully Checked in " + qty + " " + selectedValue){
                     onRequestClose();
                     setQty('');
@@ -89,7 +89,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 const data = await response.json();
                 console.log(data)
                 //Handle message
-                alert(data.message);
+                // alert(data.message);
                 if(data.message === "Successfully Checked out " + qty + " " + selectedValue){
                     onRequestClose();
                     setQty('');
