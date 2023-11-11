@@ -107,6 +107,7 @@ def projectJoin():
             return jsonify({'message': 'Project Joined successfully'})
         
         else:
+   
             return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request'})
