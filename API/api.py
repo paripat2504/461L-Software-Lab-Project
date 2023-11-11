@@ -124,7 +124,7 @@ def displayProjects():
         return jsonify({'message': 'Invalid request', 'projects': projectsRetreived})
     
 
-@app.route('/checkInHWSet/', methods=['POST'])
+@app.route('/checkInHWSet', methods=['POST'])
 def checkInHWSet():
     data = request.get_json()
     projHandler.checkInHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
@@ -134,7 +134,7 @@ def checkInHWSet():
     else:
         return jsonify({'message':err})
 
-@app.route('/checkOutHWSet/', methods=['POST'])
+@app.route('/checkOutHWSet', methods=['POST'])
 def checkOutHWSet():
     data = request.get_json()
     projHandler.checkOutHardwareSet({'projectID':data['projectID'],'hwSetID':data['hwSetID'],'amountRequested':data['amountRequested']})
