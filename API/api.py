@@ -1,7 +1,7 @@
 # Import necessary modules
 import json
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS, cross_origin
 
 #import UserHandler
 #from databasescript import Database  # Import the Database class
@@ -20,13 +20,19 @@ userHandler = uH(debugMode)
 projHandler = projH(debugMode)
 
 # Create the Flask application
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/build')
 
 CORS(app)
 
 # Create an instance of the Database class
 
 # Define login endpoint and logic
+
+@app.route('/')
+@cross_origin
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
