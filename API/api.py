@@ -24,14 +24,6 @@ app = Flask(__name__)
 
 CORS(app)
 
-# Create an instance of the Database class
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return send_from_directory('../frontend/build', 'index.html')
-@app.errorhandler(404)
-def not_found(e):
-    return send_from_directory('../frontend/build', 'index.html')
 
 # Define login endpoint and logic
 @app.route('/login', methods=['POST'])
@@ -167,5 +159,5 @@ def displayHardware():
 # Run the Flask application
 if __name__ == '__main__':
     
-    app.run(host='mysterious-everglades-11029-c622e00a9e3b.herokuapp.com', debug=False, port=os.environ.get('PORT', 80))
+    app.run(debug=False, port=int(os.environ.get('PORT', 80)))
 
