@@ -34,7 +34,7 @@ function HomePage() {
   
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:5000/displayProjects', {
+      const response = await fetch('https://mysterious-everglades-11029-c622e00a9e3b.herokuapp.com/displayProjects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ function HomePage() {
 
   const fetchResources = async () => {
     try {
-      const response = await fetch('http://localhost:5000/displayHardware', {
+      const response = await fetch('https://mysterious-everglades-11029-c622e00a9e3b.herokuapp.com/displayHardware', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

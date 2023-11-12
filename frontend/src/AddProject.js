@@ -27,7 +27,7 @@ function AddProject({fetchProjects, isOpen, onRequestClose}) {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/project', {
+            const response = await fetch('https://mysterious-everglades-11029-c622e00a9e3b.herokuapp.com/project', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
