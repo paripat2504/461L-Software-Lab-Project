@@ -27,7 +27,7 @@ CORS(app)
 # Create an instance of the Database class
 @app.route('/')
 def index():
-    return render_template('frontend/build/index.html')  # You can replace 'index.html' with your actual HTML file
+    return render_template('../frontend/build/index.html')  # You can replace 'index.html' with your actual HTML file
 
 # Define login endpoint and logic
 @app.route('/login', methods=['POST'])
