@@ -18,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "python api.py",
+    "start": "gunicorn -w 4 -b 0.0.0.0:$PORT API.api:app",
     "heroku-postbuild": "npm run build",
     "postinstall": "cd frontend && npm install && npm run build",
     "build": "react-scripts build",
