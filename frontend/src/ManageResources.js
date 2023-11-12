@@ -44,7 +44,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 hwSetID : selectedValue,
                 amountRequested : qty
               }
-                const response = await fetch(`http://127.0.0.1:5000/checkInHWSet`, {
+                const response = await fetch(`/checkInHWSet`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ function ManageResourcesContent({ onRequestClose, project, fetchProjects, fetchR
                 hwSetID : selectedValue,
                 amountRequested : qty
               }
-                const response = await fetch(`http://127.0.0.1:5000/checkOutHWSet`, {
+                const response = await fetch(`/checkOutHWSet`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'

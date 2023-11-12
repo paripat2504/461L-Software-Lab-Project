@@ -27,7 +27,7 @@ function AddProject({fetchProjects, isOpen, onRequestClose}) {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/project', {
+            const response = await fetch('/project', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
