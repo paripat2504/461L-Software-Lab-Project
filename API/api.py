@@ -1,6 +1,6 @@
 # Import necessary modules
 import json
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 
 #import UserHandler
@@ -27,11 +27,12 @@ CORS(app)
 # Create an instance of the Database class
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists("frontend/build/" + path):
-        return send_from_directory('frontend/build', path)
-    else:
-        return send_from_directory('frontend/build', 'index.html')
+def catch_all(path):
+    return send_from_directory('../frontend/build', 'index.html')
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory('../frontend/build', 'index.html')
+
 # Define login endpoint and logic
 @app.route('/login', methods=['POST'])
 def login():
@@ -113,6 +114,7 @@ def projectJoin():
             return jsonify({'message': 'Project Joined successfully'})
         
         else:
+   
             return jsonify({'message': _err})
     else:
         return jsonify({'message': 'Invalid request'})
@@ -165,5 +167,5 @@ def displayHardware():
 # Run the Flask application
 if __name__ == '__main__':
     
-    app.run(debug=False)
+    app.run(host='mysterious-everglades-11029-c622e00a9e3b.herokuapp.com', debug=False, port=os.environ.get('PORT', 80))
 

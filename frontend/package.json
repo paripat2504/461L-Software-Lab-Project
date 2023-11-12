@@ -18,7 +18,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "python api.py",
+    "heroku-postbuild": "npm run build",
+    "postinstall": "cd frontend && npm install && npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -43,5 +45,8 @@
   },
   "devDependencies": {
     "eslint": "^8.53.0"
-  }
+  },
+  "engines": {
+    "node": "14.x"
+  }  
 }
