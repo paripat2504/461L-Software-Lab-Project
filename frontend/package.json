@@ -18,7 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "gunicorn -w 4 -b 0.0.0.0:$PORT API.api:app",
+    "start": "node index.js",
+    "heroku-postbuild": "npm run build",
     "postinstall": "cd frontend && npm install && npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -44,5 +45,8 @@
   },
   "devDependencies": {
     "eslint": "^8.53.0"
-  }
+  },
+  "engines": {
+    "node": "14.x"
+  }  
 }
