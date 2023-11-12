@@ -18,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "python api.py",
     "heroku-postbuild": "npm run build",
     "postinstall": "cd frontend && npm install && npm run build",
     "build": "react-scripts build",
