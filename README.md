@@ -12,6 +12,8 @@
 - ### In the center of the screen, the user can scroll through a list of all projects and look at the details, by clicking on them, which creates a popup the user can see. In this popup, the user can also check in and out resources for the project.
 
   ![bild](https://github.com/paripat2504/461L-Software-Lab-Project/assets/33700138/6f9611b0-1a08-4e26-960d-fc50ee7c48fb)
+  ![bild](https://github.com/paripat2504/461L-Software-Lab-Project/assets/33700138/3f5a1888-aad5-4022-b625-34905f88356b)
+
   
 - ### The user can also select to add a project which creates a popup where the user can add information about the project.
 
